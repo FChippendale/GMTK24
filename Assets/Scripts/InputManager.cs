@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
+    // returns grid position mouse is currently over
     public Vector3Int GetSelectedGridPosition()
     {
         Vector3 mousePos = Input.mousePosition;
