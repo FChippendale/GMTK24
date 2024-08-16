@@ -24,9 +24,27 @@ public class PlacementSystem : MonoBehaviour
 
     private GridPlacement gridPlacement;
 
+    private void tryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
+    {
+        GameObject toPlace = Instantiate(factoryToPlace);
+
+        var (center_x, center_y) = gridPlacement.GetCenterTile();
+        if (!gridPlacement.TryAddToGrid(toPlace, center_x - gridPosition.x, center_y - gridPosition.y, allow_island))
+        {
+            // Failed to place tile
+            Destroy(toPlace);
+            return;
+        }
+
+        TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
+        drawer.tilemap = tilemap;
+        drawer.position = new Vector3Int(gridPosition.x, gridPosition.y, 0);
+    }
+
     private void Start()
     {
         gridPlacement = GetComponent<GridPlacement>();
+        tryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position
@@ -45,12 +63,7 @@ public class PlacementSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown((int)MouseButton.Left))
         {
-            var (center_x, center_y) = gridPlacement.GetCenterTile();
-            GameObject toPlace = Instantiate(factoryToPlace);
-            toPlace.GetComponent<TileDrawer>().tilemap = tilemap;
-            toPlace.GetComponent<TileDrawer>().position = gridPosition;
-
-            GetComponent<GridPlacement>().TryAddToGrid(toPlace, center_x - gridPosition.x, center_y - gridPosition.y, true);
+            tryAddFactoryAtPosition(gridPosition, false);
         }
     }
 }
