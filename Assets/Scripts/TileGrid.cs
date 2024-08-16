@@ -62,14 +62,31 @@ public class TileGrid
 
     List<Tile> getNeighbors(int x, int y)
     {
-        List<(int, int)> offsets = new List<(int, int)>{
-            (1, 0),
-            (-1, 0),
-            (0, 1),
-            (0, -1),
-            (-1, -1),
-            (-1, 1),
-        };
+        List<(int, int)> offsets;
+        if (y % 2 == 0)
+        {
+            offsets = new List<(int, int)>{
+                (-1, 0),
+                (1, 0),
+                (1, 1),
+                (0, 1),
+                (-1, 0),
+                (0, -1),
+                (1, -1),
+            };
+        }
+        else
+        {
+            offsets = new List<(int, int)>{
+                (-1, 0),
+                (-1, -1),
+                (0, -1),
+                (1, 0),
+                (0, 1),
+                (-1, 1),
+            };
+        }
+
         List<Tile> neighbours = new List<Tile>();
         foreach (var (dir_x, dir_y) in offsets)
         {
