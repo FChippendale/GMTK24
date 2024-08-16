@@ -21,6 +21,7 @@ public class TileGrid
         public GameObject occupier = null;
     }
 
+    Dictionary<GameObject, (int, int)> mapping = new Dictionary<GameObject, (int, int)>();
     Tile[,] tiles = new Tile[100, 100];
 
 
@@ -94,6 +95,11 @@ public class TileGrid
         return neighbours;
     }
 
+    public (int, int) GetLocation(GameObject gameObject)
+    {
+        return mapping[gameObject];
+    }
+
     public bool TryAddTile(GameObject to_add, int x, int y)
     {
         if (tiles[x, y].state != State.empty)
@@ -113,6 +119,7 @@ public class TileGrid
             state = State.occupied,
             occupier = to_add
         };
+        mapping.Add(to_add, (x, y));
 
         return true;
     }
