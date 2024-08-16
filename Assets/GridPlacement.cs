@@ -36,10 +36,12 @@ public class GridPlacement : MonoBehaviour
 
         foreach (GameObject obj in currentlyCalculating)
         {
-            // TODO obj.calculate score here!!
-
             var (x, y) = Grid.GetLocation(obj);
-            foreach (GameObject neighbour in Grid.GetNeighbours(x, y))
+            List<GameObject> neighbours = Grid.GetNeighbours(x, y);
+
+            obj.GetComponent<FactoryBehaviour>().AddScoreToCalculation(neighbours);
+
+            foreach (GameObject neighbour in neighbours)
             {
                 if (!alreadyCalculated.Contains(neighbour))
                 {
