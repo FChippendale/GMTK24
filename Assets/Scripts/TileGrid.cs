@@ -21,21 +21,30 @@ public class TileGrid
         public GameObject occupier = null;
     }
 
-    Dictionary<GameObject, (int, int)> mapping = new Dictionary<GameObject, (int, int)>();
-    Tile[,] tiles = new Tile[100, 100];
+    Dictionary<GameObject, (int, int)> mapping;
+    Tile[,] tiles;
 
 
-    TileGrid()
+    public TileGrid()
     {
+        mapping = new Dictionary<GameObject, (int, int)>();
+        tiles = new Tile[300, 300];
+
         for (int x = 0; x < tiles.GetLength(0); x++)
         {
-            tiles[x, 0].state = State.unusable;
-            tiles[x, tiles.GetLength(1) - 1].state = State.unusable;
-        }
-        for (int y = 0; y < tiles.GetLength(1); y++)
-        {
-            tiles[0, y].state = State.unusable;
-            tiles[tiles.GetLength(0) - 1, y].state = State.unusable;
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                tiles[x, y] = new Tile();
+
+                if (x == 0 || x == tiles.GetLength(0) - 1)
+                {
+                    tiles[x, y].state = State.unusable;
+                }
+                if (y == 0 || y == tiles.GetLength(1) - 1)
+                {
+                    tiles[x, y].state = State.unusable;
+                }
+            }
         }
     }
 
@@ -100,7 +109,7 @@ public class TileGrid
         return mapping[gameObject];
     }
 
-    public bool TryAddTile(GameObject to_add, int x, int y)
+    public bool TryAddTile(GameObject to_add, int x, int y, bool allow_island)
     {
         if (tiles[x, y].state != State.empty)
         {
@@ -108,7 +117,7 @@ public class TileGrid
         }
 
         // Has neighbour?
-        if (!hasNeighbourOfState(State.occupied, x, y))
+        if (!allow_island && !hasNeighbourOfState(State.occupied, x, y))
         {
             return false;
         }
@@ -122,5 +131,10 @@ public class TileGrid
         mapping.Add(to_add, (x, y));
 
         return true;
+    }
+
+    public (int, int) GetCenterTile()
+    {
+        return (tiles.GetLength(0) / 2, tiles.GetLength(1) / 2);
     }
 }

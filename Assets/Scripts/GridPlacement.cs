@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class GridPlacement : MonoBehaviour
 {
-    public TileGrid Grid;
+    private TileGrid grid = new TileGrid();
 
     public float TimePerIncrementalScoreUpdate = 0.0f;
 
@@ -36,8 +36,8 @@ public class GridPlacement : MonoBehaviour
 
         foreach (GameObject obj in currentlyCalculating)
         {
-            var (x, y) = Grid.GetLocation(obj);
-            List<GameObject> neighbours = Grid.GetNeighbours(x, y);
+            var (x, y) = grid.GetLocation(obj);
+            List<GameObject> neighbours = grid.GetNeighbours(x, y);
 
             obj.GetComponent<FactoryBehaviour>().AddScoreToCalculation(neighbours);
 
@@ -50,10 +50,19 @@ public class GridPlacement : MonoBehaviour
                 }
             }
         }
+        foreach (GameObject obj in currentlyCalculating)
+        {
+            obj.GetComponent<FactoryBehaviour>().FinalizeScore();
+        }
 
         if (nextToCalculate.Count == 0)
         {
             // We're done calculating score
+            foreach (GameObject obj in alreadyCalculated)
+            {
+                // Reset to avoid feedback loops
+                obj.GetComponent<FactoryBehaviour>().ResetScore();
+            }
             alreadyCalculated.Clear();
             currentlyCalculating.Clear();
             isCalculatingScore = false;
@@ -75,8 +84,13 @@ public class GridPlacement : MonoBehaviour
         }
     }
 
-    public bool TryAddToGrid(GameObject to_add, int x, int y)
+    public bool TryAddToGrid(GameObject to_add, int x, int y, bool allow_island)
     {
-        return Grid.TryAddTile(to_add, x, y);
+        return grid.TryAddTile(to_add, x, y, allow_island);
+    }
+
+    public (int, int) GetCenterTile()
+    {
+        return grid.GetCenterTile();
     }
 }

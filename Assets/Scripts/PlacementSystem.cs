@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -18,12 +19,21 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject cellIndicator;
 
+    [SerializeField]
+    private GameObject factoryToPlace;
+
+    private GridPlacement gridPlacement;
+
+    private void Start()
+    {
+        gridPlacement = GetComponent<GridPlacement>();
+    }
+
     // simple utility to move an object to the on screen position of the currently returned grid position
     private void Update()
     {
         // get mouse grid position and convert back to screen pos
         Vector3Int gridPosition = inputManager.GetSelectedGridPosition();
-        drawTile(gridPosition);
 
         Vector3 indicatorPosition = grid.CellToWorld(gridPosition);
 
@@ -32,16 +42,15 @@ public class PlacementSystem : MonoBehaviour
 
         // position sprite at calculated position
         cellIndicator.transform.position = indicatorPosition;
-    }
 
-    private void drawTile(Vector3Int target)
-    {
-        // don't draw a tile if there already is one
-        if(tilemap.HasTile(target))
+        if (Input.GetMouseButtonDown((int)MouseButton.Left))
         {
-            return;
-        }
+            var (center_x, center_y) = gridPlacement.GetCenterTile();
+            GameObject toPlace = Instantiate(factoryToPlace);
+            toPlace.GetComponent<TileDrawer>().tilemap = tilemap;
+            toPlace.GetComponent<TileDrawer>().position = gridPosition;
 
-        tilemap.SetTile(target, tileAsset);
+            GetComponent<GridPlacement>().TryAddToGrid(toPlace, center_x - gridPosition.x, center_y - gridPosition.y, true);
+        }
     }
 }

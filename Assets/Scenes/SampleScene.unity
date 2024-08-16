@@ -471,6 +471,7 @@ GameObject:
   m_Component:
   - component: {fileID: 929727126}
   - component: {fileID: 929727127}
+  - component: {fileID: 929727128}
   m_Layer: 0
   m_Name: PlacementSystem
   m_TagString: Untagged
@@ -510,6 +511,20 @@ MonoBehaviour:
   tilemap: {fileID: 1605598512}
   tileAsset: {fileID: 11400000, guid: ef4c586c4e17f214dbeec74b19fc83f6, type: 2}
   cellIndicator: {fileID: 664313176}
+  factoryToPlace: {fileID: 3012125723330971411, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
+--- !u!114 &929727128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929727125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 290da9fe915858c8183c86bb5109db46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimePerIncrementalScoreUpdate: 0.2
 --- !u!1 &1237400645
 GameObject:
   m_ObjectHideFlags: 0
