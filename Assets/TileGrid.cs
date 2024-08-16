@@ -13,16 +13,30 @@ enum State
     occupied,
 }
 
-class Tile
-{
-    public State state = State.empty;
-    public GameObject occupier = null;
-}
-
 public class TileGrid
 {
+    class Tile
+    {
+        public State state = State.empty;
+        public GameObject occupier = null;
+    }
+
     Tile[,] tiles = new Tile[100, 100];
 
+
+    TileGrid()
+    {
+        for (int x = 0; x < tiles.GetLength(0); x++)
+        {
+            tiles[x, 0].state = State.unusable;
+            tiles[x, tiles.GetLength(1) - 1].state = State.unusable;
+        }
+        for (int y = 0; y < tiles.GetLength(1); y++)
+        {
+            tiles[0, y].state = State.unusable;
+            tiles[tiles.GetLength(0) - 1, y].state = State.unusable;
+        }
+    }
 
     bool hasNeighbourOfState(State state, int x, int y)
     {
