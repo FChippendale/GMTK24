@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +11,16 @@ public class ButtonListener : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FactoryButton0.onClick.AddListener(() => ButtonClicked(FactoryBehaviour.TraversalType.constant_integer_amount));
-        FactoryButton1.onClick.AddListener(() => ButtonClicked(FactoryBehaviour.TraversalType.sum_of_any_adjacent));
-        FactoryButton2.onClick.AddListener(() => ButtonClicked(FactoryBehaviour.TraversalType.largest_adjacent));
+        FactoryButton0.onClick.AddListener(() => ButtonClicked(FactoryButton0, FactoryBehaviour.TraversalType.constant_integer_amount));
+        FactoryButton1.onClick.AddListener(() => ButtonClicked(FactoryButton1, FactoryBehaviour.TraversalType.sum_of_any_adjacent));
+        FactoryButton2.onClick.AddListener(() => ButtonClicked(FactoryButton2, FactoryBehaviour.TraversalType.largest_adjacent));
+
+        ButtonClicked(FactoryButton2, FactoryBehaviour.TraversalType.largest_adjacent);
     }
 
-    void ButtonClicked(FactoryBehaviour.TraversalType newTraversalType)
+    void ButtonClicked(Button button, FactoryBehaviour.TraversalType newTraversalType)
     {
         factoryToPlace.traversalType = newTraversalType;
+        factoryToPlace.factoryColor = button.GetComponent<Image>().color;
     }
 }

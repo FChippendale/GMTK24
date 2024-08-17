@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -30,7 +26,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Camera sceneCamera;
 
-    private void tryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
+    private void TryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
     {
         GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(gridPosition), Quaternion.identity);
 
@@ -47,6 +43,7 @@ public class PlacementSystem : MonoBehaviour
 
         // pass factory behaviour on creation to allow redrawing from TileDrawer
         drawer.traversalType = toPlace.GetComponent<FactoryBehaviour>().traversalType;
+        drawer.color = toPlace.GetComponent<FactoryBehaviour>().factoryColor;
         drawer.position = gridPosition;
 
         FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
@@ -56,7 +53,7 @@ public class PlacementSystem : MonoBehaviour
     private void Start()
     {
         gridPlacement = GetComponent<GridPlacement>();
-        tryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
+        TryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position
@@ -72,11 +69,11 @@ public class PlacementSystem : MonoBehaviour
 
         // position sprite at calculated position
         cellIndicator.transform.position = indicatorPosition;
-        cellIndicator.GetComponent<SpriteRenderer>().material.color = TileDrawer.Mapping[factoryToPlace.GetComponent<FactoryBehaviour>().traversalType];
+        cellIndicator.GetComponent<SpriteRenderer>().material.color = factoryToPlace.GetComponent<FactoryBehaviour>().factoryColor;
 
         if (Input.GetMouseButtonDown((int)MouseButton.Left))
         {
-            tryAddFactoryAtPosition(gridPosition, false);
+            TryAddFactoryAtPosition(gridPosition, false);
         }
     }
 }

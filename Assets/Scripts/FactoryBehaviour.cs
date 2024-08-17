@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 
 public class FactoryBehaviour : MonoBehaviour
@@ -25,6 +22,7 @@ public class FactoryBehaviour : MonoBehaviour
         largest_adjacent,
     }
     public TraversalType traversalType;
+    public Color factoryColor;
 
     // ensure initial tile placed at game start is always of same type
     void Start()

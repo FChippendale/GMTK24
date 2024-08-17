@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -20,28 +15,21 @@ public class TileDrawer : MonoBehaviour
     public FactoryBehaviour.TraversalType traversalType;
 
     public bool active = true;
-
-    public static Dictionary<FactoryBehaviour.TraversalType, Color> Mapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
-        {FactoryBehaviour.TraversalType.constant_integer_amount, new Color(0.20392f, 0.34902f, 0.58431f, 1.0f)}, // 345995
-        {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color(0.89412f, 0.0f, 0.4f, 1.0f)},    // E40066
-        {FactoryBehaviour.TraversalType.largest_adjacent, new Color(0.01176f, 080784f, 0.64314f, 1.0f)} // 03CEA4
-
-        // FB4D3D
-    };
+    public Color color;
 
     // Start is called before the first frame update
     void Start()
     {
-        drawTile();
+        DrawTile();
     }
 
     // Update is called once per frame
     void Update()
     {
-        toggleTile();
+        ToggleTile();
     }
 
-    private void toggleTile()
+    private void ToggleTile()
     {
         // active = !active;
         // don't toggle a tile if there isn't one
@@ -49,13 +37,13 @@ public class TileDrawer : MonoBehaviour
         {
             return;
         }
-        Color tempColor = Mapping[traversalType];
-        tempColor.a = (active ? 1.0f : 0.1f);
+        Color tempColor = color;
+        tempColor.a = active ? 1.0f : 0.1f;
 
         tilemap.SetColor(position, tempColor);
     }
 
-    private void drawTile()
+    private void DrawTile()
     {
         // don't draw a tile if there already is one
         if (tilemap.HasTile(position))
@@ -65,6 +53,6 @@ public class TileDrawer : MonoBehaviour
 
         tilemap.SetTile(position, tileAsset);
         tilemap.SetTileFlags(position, TileFlags.None);
-        tilemap.SetColor(position, Mapping[traversalType]);
+        tilemap.SetColor(position, color);
     }
 }
