@@ -5,7 +5,7 @@ public class Timer : MonoBehaviour
 {
     float lastEvent;
 
-    public float intervalBetweenEvents = 10.0f;
+    public float intervalBetweenEvents = 8.0f;
 
     public string message = "TimerTick";
 
