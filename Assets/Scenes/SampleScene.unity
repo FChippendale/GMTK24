@@ -651,7 +651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec960990109d0b5f85d576d2d90dcd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invalidTime: 0.4
+  invalidTime1: 0.4
+  invalidTime2: 0.2
 --- !u!1 &732832393
 GameObject:
   m_ObjectHideFlags: 0
@@ -11268,7 +11269,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254472423}
   m_Enabled: 1
-  m_CellSize: {x: 0.8659766, y: 1, z: 1}
+  m_CellSize: {x: 1, y: 1, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 1
   m_CellSwizzle: 2
