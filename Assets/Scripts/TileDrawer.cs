@@ -17,7 +17,9 @@ public class TileDrawer : MonoBehaviour
 
     public Vector3Int position;
 
-    private FactoryBehaviour.TraversalType traversalType;
+    public FactoryBehaviour.TraversalType traversalType;
+
+    public bool active = true;
 
     Dictionary<FactoryBehaviour.TraversalType, Color> mapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
         {FactoryBehaviour.TraversalType.constant_integer_amount, new Color(0.20392f, 0.34902f, 0.58431f, 1.0f)}, // 345995
@@ -30,28 +32,41 @@ public class TileDrawer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        traversalType = GetComponent<FactoryBehaviour>().traversalType;
-        drawTile(position);
+        // traversalType = GetComponent<FactoryBehaviour>().traversalType;
+        drawTile();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        toggleTile();
     }
 
-    private void drawTile(Vector3Int target)
+    private void toggleTile()
+    {
+        // active = !active;
+        // don't toggle a tile if there isn't one
+        if (!tilemap.HasTile(position))
+        {
+            return;
+        }
+        // traversalType = GetComponent<FactoryBehaviour>().traversalType;
+        Color tempColor = mapping[traversalType];
+        tempColor.a = (active ? 1.0f : 0.1f);
+
+        tilemap.SetColor(position, tempColor);
+    } 
+
+    private void drawTile()
     {
         // don't draw a tile if there already is one
-        if (tilemap.HasTile(target))
+        if (tilemap.HasTile(position))
         {
             return;
         }
 
-        tilemap.SetTile(target, tileAsset);
-        tilemap.SetTileFlags(target, TileFlags.None);
-        tilemap.SetColor(target, mapping[traversalType]);
-        
-        // tilemap.SetColor(target, mapping[FactoryBehaviour.TraversalType.constant_integer_amount]);
+        tilemap.SetTile(position, tileAsset);
+        tilemap.SetTileFlags(position, TileFlags.None);
+        tilemap.SetColor(position, mapping[traversalType]);
     }
 }

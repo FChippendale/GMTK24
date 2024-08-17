@@ -15,11 +15,17 @@ public class FactoryBehaviour : MonoBehaviour
 
     public enum TraversalType
     {
-        constant_integer_amount,
+        constant_integer_amount,  // ignore neighbour value, this object counts as this value
         sum_of_any_adjacent,
         largest_adjacent,
     }
     public TraversalType traversalType;
+
+    // ensure initial tile placed at game start is always of same type
+    void Start()
+    {
+        traversalType = TraversalType.constant_integer_amount;
+    }
 
     public void FinalizeScore()
     {
