@@ -26,8 +26,8 @@ public class InputManager : MonoBehaviour
 
         Vector3 worldPos = sceneCamera.ScreenToWorldPoint(mousePos);
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
-        lastPosition = gridPosition;
         gridPosition.z = 0;
+        lastPosition = gridPosition;
         return gridPosition;
     }
 }
