@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -17,30 +18,23 @@ public class TileDrawer : MonoBehaviour
     public bool active = true;
     public Color color;
 
+    private float animationPhase;
+    private float animationFrequency;
+
     // Start is called before the first frame update
     void Start()
     {
         DrawTile();
+        animationPhase = Random.Range(0, Mathf.PI);
+        animationFrequency = Random.Range(0.9f, 1.1f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        ToggleTile();
-    }
-
-    private void ToggleTile()
-    {
-        // active = !active;
-        // don't toggle a tile if there isn't one
-        if (!tilemap.HasTile(position))
-        {
-            return;
-        }
-        Color tempColor = color;
-        tempColor.a = active ? 1.0f : 0.1f;
-
-        tilemap.SetColor(position, tempColor);
+        float alpha = 0.8f + Mathf.Sin(
+            animationFrequency * Time.time + animationPhase) / 6.0f;
+        tilemap.SetColor(position, color.WithAlpha(alpha));
     }
 
     private void DrawTile()
