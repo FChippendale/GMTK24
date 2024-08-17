@@ -799,11 +799,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9a65ef8bfc507cf9917b4ef2eb5626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1605598512}
-  cellIndicator: {fileID: 664313179}
   target: {fileID: 1234496619}
-  scaleMultiplier: 0.9
+  scaleMultiplier: 0.7
   thresholdMultiplier: 2
+  animationRate: 0.3
 --- !u!1 &784942378
 GameObject:
   m_ObjectHideFlags: 0
