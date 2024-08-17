@@ -19,15 +19,15 @@ public class InputManager : MonoBehaviour
     public Vector3Int GetSelectedGridPosition()
     {
         Vector3 mousePos = Input.mousePosition;
-        if(RectTransformUtility.RectangleContainsScreenPoint(gridScreenArea, mousePos))
+        if(!RectTransformUtility.RectangleContainsScreenPoint(gridScreenArea, mousePos, sceneCamera))
         {
             return lastPosition;
         }
 
         Vector3 worldPos = sceneCamera.ScreenToWorldPoint(mousePos);
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
-        lastPosition = gridPosition;
         gridPosition.z = 0;
+        lastPosition = gridPosition;
         return gridPosition;
     }
 }
