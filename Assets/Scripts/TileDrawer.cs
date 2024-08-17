@@ -20,9 +20,10 @@ public class TileDrawer : MonoBehaviour
     private FactoryBehaviour.TraversalType traversalType;
 
     Dictionary<FactoryBehaviour.TraversalType, Color> mapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
-        {FactoryBehaviour.TraversalType.constant_integer_amount, new Color(0.20392f, 0.34902f, 0.58431f, 1.0f)},
-        {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color(0.89412f, 0.0f, 0.4f, 1.0f)}
-        // 03CEA4
+        {FactoryBehaviour.TraversalType.constant_integer_amount, new Color(0.20392f, 0.34902f, 0.58431f, 1.0f)}, // 345995
+        {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color(0.89412f, 0.0f, 0.4f, 1.0f)},    // E40066
+        {FactoryBehaviour.TraversalType.largest_adjacent, new Color(0.01176f, 080784f, 0.64314f, 1.0f)} // 03CEA4
+        
         // FB4D3D
     };
 

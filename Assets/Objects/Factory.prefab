@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ff0894e07ec76b6adf9071170fc4cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traversalType: 1
+  traversalType: 2
 --- !u!114 &-6377398394850641804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a157799e71eae60fe996d79299d6bfbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAsset: {fileID: 11400000, guid: ef4c586c4e17f214dbeec74b19fc83f6, type: 2}
+  tileAsset: {fileID: 11400000, guid: a8b385e2ff7e5764b818d9484a58e916, type: 2}
   tilemap: {fileID: 0}
   position: {x: 0, y: 0, z: 0}

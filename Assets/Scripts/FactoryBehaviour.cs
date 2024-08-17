@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +17,7 @@ public class FactoryBehaviour : MonoBehaviour
     {
         constant_integer_amount,
         sum_of_any_adjacent,
+        largest_adjacent,
     }
     public TraversalType traversalType;
 
@@ -47,6 +49,12 @@ public class FactoryBehaviour : MonoBehaviour
                 foreach (GameObject gameObject in neighbours)
                 {
                     lastScore += gameObject.GetComponent<FactoryBehaviour>().GetScoreLastCalculation();
+                }
+                break;
+            case TraversalType.largest_adjacent:
+                foreach (GameObject gameObject in neighbours)
+                {
+                    lastScore = Math.Max(lastScore, gameObject.GetComponent<FactoryBehaviour>().GetScoreLastCalculation());
                 }
                 break;
         }
