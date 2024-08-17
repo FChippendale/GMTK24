@@ -37,7 +37,7 @@ public class MeasuringScale : MonoBehaviour
     void Update()
     {
         float diff = lhs - rhs;
-        float normalizedDiff = diff / (Math.Min(Math.Abs(lhs), Math.Abs(rhs)) + 1);
+        double normalizedDiff = diff / Math.Sqrt(Math.Min(Math.Abs(lhs), Math.Abs(rhs)) + 1);
         float requestAngle = (float)(180 * Math.Atan(normalizedDiff / Stickiness) / Math.PI);
 
         if (Math.Abs(requestAngle - lastAngle) > MaxAngleChangePerFrame)
