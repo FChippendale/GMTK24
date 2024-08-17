@@ -49,6 +49,8 @@ public class PlacementSystem : MonoBehaviour
         FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
         behaviour.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
 
+        gameObject.SendMessage("FactoryAdded", gridPosition);
+
         return true;
     }
 

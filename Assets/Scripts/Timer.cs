@@ -14,7 +14,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lastEvent = Time.time;
+        Reset();
     }
 
     // Update is called once per frame
@@ -23,9 +23,14 @@ public class Timer : MonoBehaviour
         if (Time.time - lastEvent > intervalBetweenEvents)
         {
             gameObject.SendMessage(message);
-            lastEvent = Time.time;
+            Reset();
         }
 
         ui.SetText("{0:1} s", lastEvent + intervalBetweenEvents - Time.time);
+    }
+
+    public void Reset()
+    {
+        lastEvent = Time.time;
     }
 }
