@@ -24,9 +24,15 @@ public class PlacementSystem : MonoBehaviour
 
     private GridPlacement gridPlacement;
 
+    public GameObject canvas;
+    public GameObject text;
+
+    [SerializeField]
+    private Camera sceneCamera;
+
     private void tryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
     {
-        GameObject toPlace = Instantiate(factoryToPlace);
+        GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(gridPosition), Quaternion.identity);
 
         var (center_x, center_y) = gridPlacement.GetCenterTile();
         if (!gridPlacement.TryAddToGrid(toPlace, center_x - gridPosition.x, center_y - gridPosition.y, allow_island))
@@ -38,10 +44,13 @@ public class PlacementSystem : MonoBehaviour
 
         TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
         drawer.tilemap = tilemap;
-        drawer.position = new Vector3Int(gridPosition.x, gridPosition.y, 0);
 
         // pass factory behaviour on creation to allow redrawing from TileDrawer
         drawer.traversalType = toPlace.GetComponent<FactoryBehaviour>().traversalType;
+        drawer.position = gridPosition;
+
+        FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
+        behaviour.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
     }
 
     private void Start()

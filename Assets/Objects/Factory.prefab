@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ff0894e07ec76b6adf9071170fc4cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewportPosition: {x: 0, y: 0}
+  text: {fileID: 7914618332485724548, guid: 1cf656735179574938415033c99af16b, type: 3}
   traversalType: 2
---- !u!114 &-6377398394850641804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

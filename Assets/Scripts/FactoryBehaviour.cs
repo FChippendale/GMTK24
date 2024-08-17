@@ -12,6 +12,10 @@ public class FactoryBehaviour : MonoBehaviour
     private int lastScore = 1;
     private int lastCommittedScore = 1;
 
+    private GameObject canvas;
+
+    public Vector2 viewportPosition;
+    public GameObject text;
 
     public enum TraversalType
     {
@@ -43,6 +47,11 @@ public class FactoryBehaviour : MonoBehaviour
         return lastCommittedScore;
     }
 
+    public void Start()
+    {
+        canvas = GameObject.FindGameObjectWithTag("Canvas");
+    }
+
     public void AddScoreToCalculation(List<GameObject> neighbours)
     {
         lastScore = 0;
@@ -64,6 +73,14 @@ public class FactoryBehaviour : MonoBehaviour
                 }
                 break;
         }
+
+        RectTransform CanvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 canvas_position = new Vector2(
+            (viewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f),
+            (viewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)
+        );
+        GameObject newObject = GameObject.Instantiate(text, canvas.transform);
+        newObject.GetComponent<RectTransform>().anchoredPosition = canvas_position - new Vector2(20.0f, 25.0f);
     }
 
 }

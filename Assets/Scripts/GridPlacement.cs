@@ -12,11 +12,12 @@ public class GridPlacement : MonoBehaviour
     public float TimePerIncrementalScoreUpdate = 0.0f;
 
     // Score calculation state
-    bool isCalculatingScore = false;
+    public bool isCalculatingScore = false;
     float timeTillNextIncrementalScoreCalculation = 0.1f;
 
-    HashSet<GameObject> alreadyCalculated = new HashSet<GameObject>();
-    List<GameObject> currentlyCalculating = new List<GameObject>();
+
+    int currentTraversalIndex = 0;
+    List<GameObject> orderAdded = new List<GameObject>();
 
 
     // Start is called before the first frame update
@@ -31,47 +32,29 @@ public class GridPlacement : MonoBehaviour
         {
             return;
         }
+
         // Calculate next part of score
-        List<GameObject> nextToCalculate = new List<GameObject>();
+        GameObject toCalculate = orderAdded[currentTraversalIndex];
+        var (x, y) = grid.GetLocation(toCalculate);
+        List<GameObject> neighbours = grid.GetNeighbours(x, y);
+        toCalculate.GetComponent<FactoryBehaviour>().AddScoreToCalculation(neighbours);
 
-        foreach (GameObject obj in currentlyCalculating)
-        {
-            var (x, y) = grid.GetLocation(obj);
-            List<GameObject> neighbours = grid.GetNeighbours(x, y);
-
-            obj.GetComponent<FactoryBehaviour>().AddScoreToCalculation(neighbours);
-
-            foreach (GameObject neighbour in neighbours)
-            {
-                if (!alreadyCalculated.Contains(neighbour))
-                {
-                    nextToCalculate.Add(neighbour);
-                    alreadyCalculated.Add(neighbour);
-                }
-            }
-        }
-        foreach (GameObject obj in currentlyCalculating)
-        {
-            obj.GetComponent<FactoryBehaviour>().FinalizeScore();
-        }
-
-        if (nextToCalculate.Count == 0)
+        currentTraversalIndex += 1;
+        if (currentTraversalIndex == orderAdded.Count)
         {
             // We're done calculating score
-            foreach (GameObject obj in alreadyCalculated)
+            foreach (GameObject obj in orderAdded)
             {
                 // Reset to avoid feedback loops
                 obj.GetComponent<FactoryBehaviour>().ResetScore();
             }
-            alreadyCalculated.Clear();
-            currentlyCalculating.Clear();
+            currentTraversalIndex = 0;
             isCalculatingScore = false;
             return;
         }
 
 
         // We still have more updates to calculate
-        currentlyCalculating = nextToCalculate;
         timeTillNextIncrementalScoreCalculation = TimePerIncrementalScoreUpdate;
     }
 
@@ -86,7 +69,12 @@ public class GridPlacement : MonoBehaviour
 
     public bool TryAddToGrid(GameObject to_add, int x, int y, bool allow_island)
     {
-        return grid.TryAddTile(to_add, x, y, allow_island);
+        if (grid.TryAddTile(to_add, x, y, allow_island))
+        {
+            orderAdded.Add(to_add);
+            return true;
+        }
+        return false;
     }
 
     public (int, int) GetCenterTile()
