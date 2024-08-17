@@ -149,6 +149,27 @@ public class TileGrid
         return true;
     }
 
+    public List<(int, int)> GetPossiblePlacements()
+    {
+        List<(int, int)> result = new List<(int, int)>();
+        for (int x = 0; x < tiles.GetLength(0); x++)
+        {
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                if (tiles[x, y].state != State.empty)
+                {
+                    continue;
+                }
+                if (!hasNeighbourOfState(State.occupied, x, y))
+                {
+                    continue;
+                }
+                result.Add((x, y));
+            }
+        }
+        return result;
+    }
+
     public (int, int) GetCenterTile()
     {
         return (tiles.GetLength(0) / 2, tiles.GetLength(1) / 2);

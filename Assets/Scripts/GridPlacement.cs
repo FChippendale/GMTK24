@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 
 public class GridPlacement : MonoBehaviour
@@ -52,6 +53,11 @@ public class GridPlacement : MonoBehaviour
 
         timeTillNextIncrementalScoreCalculation = TimePerIncrementalScoreUpdate;
         return false;
+    }
+
+    public List<(int, int)> GetPossiblePlacements()
+    {
+        return grid.GetPossiblePlacements();
     }
 
     public bool TryAddToGrid(GameObject to_add, int x, int y, bool allow_island)

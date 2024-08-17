@@ -22,7 +22,16 @@ public class FactoryBehaviour : MonoBehaviour
         largest_adjacent,
     }
     public TraversalType traversalType;
-    public Color factoryColor;
+
+    public Color getColor()
+    {
+        Dictionary<FactoryBehaviour.TraversalType, Color> colorMapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
+            {FactoryBehaviour.TraversalType.constant_integer_amount, new Color32(106, 137, 204,255)},
+            {FactoryBehaviour.TraversalType.largest_adjacent, new Color32(184, 233, 148,255)},
+            {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color32(250, 211, 144,255)},
+        };
+        return colorMapping[traversalType];
+    }
 
     // ensure initial tile placed at game start is always of same type
     void Start()

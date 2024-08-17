@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -40,13 +42,14 @@ public class PlacementSystem : MonoBehaviour
 
         // pass factory behaviour on creation to allow redrawing from TileDrawer
         drawer.traversalType = toPlace.GetComponent<FactoryBehaviour>().traversalType;
-        drawer.color = toPlace.GetComponent<FactoryBehaviour>().factoryColor;
+        drawer.color = toPlace.GetComponent<FactoryBehaviour>().getColor();
         drawer.position = gridPosition;
 
         FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
         behaviour.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
 
         gameObject.SendMessage("FactoryAdded", gridPosition);
+        assignNextFactoryType();
 
         return true;
     }
@@ -57,9 +60,24 @@ public class PlacementSystem : MonoBehaviour
         TryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
     }
 
-    public void TimerTick()
+    void assignNextFactoryType()
     {
+        List<FactoryBehaviour.TraversalType> traversalTypes = new List<FactoryBehaviour.TraversalType>{
+            FactoryBehaviour.TraversalType.constant_integer_amount,
+            FactoryBehaviour.TraversalType.largest_adjacent,
+            FactoryBehaviour.TraversalType.sum_of_any_adjacent,
+        };
 
+        FactoryBehaviour.TraversalType type = traversalTypes[UnityEngine.Random.Range(0, traversalTypes.Count)];
+        factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = type;
+    }
+
+    public void PlacementDeadlineTimerTick()
+    {
+        List<(int, int)> possiblePlacements = gridPlacement.GetPossiblePlacements();
+        var (x, y) = possiblePlacements[UnityEngine.Random.Range(0, possiblePlacements.Count)];
+        gridPlacement.TryAddToGrid(factoryToPlace, x, y, true);
+        assignNextFactoryType();
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position
@@ -87,7 +105,7 @@ public class PlacementSystem : MonoBehaviour
 
         if (gridPosition.type == PositionType.valid)
         {
-            colour = factoryToPlace.GetComponent<FactoryBehaviour>().factoryColor;
+            colour = factoryToPlace.GetComponent<FactoryBehaviour>().getColor();
 
             if (Input.GetMouseButtonDown((int)MouseButton.Left))
             {
