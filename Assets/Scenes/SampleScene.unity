@@ -745,8 +745,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 929727126}
-  - component: {fileID: 929727127}
   - component: {fileID: 929727128}
+  - component: {fileID: 929727127}
   m_Layer: 0
   m_Name: PlacementSystem
   m_TagString: Untagged
@@ -787,6 +787,9 @@ MonoBehaviour:
   tileAsset: {fileID: 11400000, guid: ef4c586c4e17f214dbeec74b19fc83f6, type: 2}
   cellIndicator: {fileID: 664313176}
   factoryToPlace: {fileID: 3012125723330971411, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
+  canvas: {fileID: 1000363375}
+  text: {fileID: 7914618332485724548, guid: 1cf656735179574938415033c99af16b, type: 3}
+  sceneCamera: {fileID: 519420031}
 --- !u!114 &929727128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +803,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimePerIncrementalScoreUpdate: 0.2
+  isCalculatingScore: 0
 --- !u!1 &1000363375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,7 +1139,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200, y: 0}
+  m_AnchoredPosition: {x: -199.99994, y: 0}
   m_SizeDelta: {x: -600, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1310171583
@@ -1655,6 +1659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneCamera: {fileID: 519420031}
   grid: {fileID: 1254472424}
+  gridScreenArea: {fileID: 1310171582}
 --- !u!4 &2117731637
 Transform:
   m_ObjectHideFlags: 0

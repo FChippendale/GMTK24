@@ -29,6 +29,7 @@ public class FactoryBehaviour : MonoBehaviour
     void Start()
     {
         traversalType = TraversalType.constant_integer_amount;
+        canvas = GameObject.FindGameObjectWithTag("Canvas");
     }
 
     public void FinalizeScore()
@@ -45,11 +46,6 @@ public class FactoryBehaviour : MonoBehaviour
     public int GetScoreLastCalculation()
     {
         return lastCommittedScore;
-    }
-
-    public void Start()
-    {
-        canvas = GameObject.FindGameObjectWithTag("Canvas");
     }
 
     public void AddScoreToCalculation(List<GameObject> neighbours)
