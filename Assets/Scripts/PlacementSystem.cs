@@ -72,6 +72,7 @@ public class PlacementSystem : MonoBehaviour
 
         // position sprite at calculated position
         cellIndicator.transform.position = indicatorPosition;
+        cellIndicator.GetComponent<SpriteRenderer>().material.color = TileDrawer.Mapping[factoryToPlace.GetComponent<FactoryBehaviour>().traversalType];
 
         if (Input.GetMouseButtonDown((int)MouseButton.Left))
         {

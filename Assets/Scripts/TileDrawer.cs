@@ -21,17 +21,17 @@ public class TileDrawer : MonoBehaviour
 
     public bool active = true;
 
-    Dictionary<FactoryBehaviour.TraversalType, Color> mapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
+    public static Dictionary<FactoryBehaviour.TraversalType, Color> Mapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
         {FactoryBehaviour.TraversalType.constant_integer_amount, new Color(0.20392f, 0.34902f, 0.58431f, 1.0f)}, // 345995
         {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color(0.89412f, 0.0f, 0.4f, 1.0f)},    // E40066
         {FactoryBehaviour.TraversalType.largest_adjacent, new Color(0.01176f, 080784f, 0.64314f, 1.0f)} // 03CEA4
-        
+
         // FB4D3D
     };
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
         drawTile();
     }
 
@@ -49,11 +49,11 @@ public class TileDrawer : MonoBehaviour
         {
             return;
         }
-        Color tempColor = mapping[traversalType];
+        Color tempColor = Mapping[traversalType];
         tempColor.a = (active ? 1.0f : 0.1f);
 
         tilemap.SetColor(position, tempColor);
-    } 
+    }
 
     private void drawTile()
     {
@@ -65,6 +65,6 @@ public class TileDrawer : MonoBehaviour
 
         tilemap.SetTile(position, tileAsset);
         tilemap.SetTileFlags(position, TileFlags.None);
-        tilemap.SetColor(position, mapping[traversalType]);
+        tilemap.SetColor(position, Mapping[traversalType]);
     }
 }
