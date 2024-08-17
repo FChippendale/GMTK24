@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         Vector3 worldPos = sceneCamera.ScreenToWorldPoint(mousePos);
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
+        gridPosition.z = 0;
         return gridPosition;
     }
 }
