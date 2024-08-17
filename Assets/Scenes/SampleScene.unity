@@ -647,7 +647,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 732832394}
-  - component: {fileID: 732832395}
   - component: {fileID: 732832397}
   - component: {fileID: 732832398}
   - component: {fileID: 732832401}
@@ -676,19 +675,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 784942379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &732832395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732832393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe34bfbea0a25364497e87527a710629, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  factoryToPlace: {fileID: 119804692318143694, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
 --- !u!114 &732832397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10953,7 +10939,7 @@ GameObject:
   - component: {fileID: 1189713434}
   - component: {fileID: 1189713437}
   m_Layer: 0
-  m_Name: FactoryButton0
+  m_Name: NextTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10968,8 +10954,8 @@ RectTransform:
   m_GameObject: {fileID: 1189713432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1729906971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11826,7 +11812,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 8.0 s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
