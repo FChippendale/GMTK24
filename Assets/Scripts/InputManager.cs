@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
     public Vector3Int GetSelectedGridPosition()
     {
         Vector3 mousePos = Input.mousePosition;
-        if(RectTransformUtility.RectangleContainsScreenPoint(gridScreenArea, mousePos))
+        if(!RectTransformUtility.RectangleContainsScreenPoint(gridScreenArea, mousePos, sceneCamera))
         {
             return lastPosition;
         }
