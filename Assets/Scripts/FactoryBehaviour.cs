@@ -29,7 +29,6 @@ public class FactoryBehaviour : MonoBehaviour
     // ensure initial tile placed at game start is always of same type
     void Start()
     {
-        traversalType = TraversalType.constant_integer_amount;
         canvas = GameObject.FindGameObjectWithTag("Canvas");
     }
 

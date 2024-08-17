@@ -802,8 +802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 290da9fe915858c8183c86bb5109db46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimePerIncrementalScoreUpdate: 0.2
-  isCalculatingScore: 0
 --- !u!1 &977104238
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +833,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridPlacementObj: {fileID: 929727125}
   TimeTillScoreCalculation: 3
-  TimeBetweenScoreCalculations: 0.5
+  TimeBetweenScoreCalculations: 2
+  TimeOfScoreCalculation: 1
 --- !u!4 &977104240
 Transform:
   m_ObjectHideFlags: 0

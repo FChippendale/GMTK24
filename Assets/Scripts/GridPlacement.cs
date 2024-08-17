@@ -9,10 +9,7 @@ public class GridPlacement : MonoBehaviour
 {
     private TileGrid grid = new TileGrid();
 
-    public float TimePerIncrementalScoreUpdate = 0.0f;
-
-    // Score calculation state
-    public bool isCalculatingScore = false;
+    float TimePerIncrementalScoreUpdate = 0.0f;
     float timeTillNextIncrementalScoreCalculation = 0.1f;
 
 
@@ -25,12 +22,19 @@ public class GridPlacement : MonoBehaviour
     {
     }
 
-    void doScoreCalculationUpdate()
+    public void StartScoreCalculation(float targetTime)
+    {
+        currentTraversalIndex = 0;
+        TimePerIncrementalScoreUpdate = targetTime / orderAdded.Count;
+        timeTillNextIncrementalScoreCalculation = 0;
+    }
+
+    public bool DoScoreCalculationUpdateStep()
     {
         timeTillNextIncrementalScoreCalculation -= Time.deltaTime;
         if (timeTillNextIncrementalScoreCalculation > 0.0f)
         {
-            return;
+            return false;
         }
 
         // Calculate next part of score
@@ -48,23 +52,11 @@ public class GridPlacement : MonoBehaviour
                 // Reset to avoid feedback loops
                 obj.GetComponent<FactoryBehaviour>().ResetScore();
             }
-            currentTraversalIndex = 0;
-            isCalculatingScore = false;
-            return;
+            return true;
         }
 
-
-        // We still have more updates to calculate
         timeTillNextIncrementalScoreCalculation = TimePerIncrementalScoreUpdate;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isCalculatingScore)
-        {
-            doScoreCalculationUpdate();
-        }
+        return false;
     }
 
     public bool TryAddToGrid(GameObject to_add, int x, int y, bool allow_island)

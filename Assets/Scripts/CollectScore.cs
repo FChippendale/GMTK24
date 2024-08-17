@@ -6,13 +6,17 @@ public class CollectScore : MonoBehaviour
 {
     [SerializeField]
     private GameObject gridPlacementObj;
+    private GridPlacement gridPlacement;
 
     public float TimeTillScoreCalculation = 0.0f;
-    public float TimeBetweenScoreCalculations = 0.5f;
+    public float TimeBetweenScoreCalculations = 3.0f;
+    public float TimeOfScoreCalculation = 2.0f;
+
+    bool isCalculatingScore = false;
 
     void Start()
     {
-
+        gridPlacement = gridPlacementObj.GetComponent<GridPlacement>();
     }
 
     void Update()
@@ -20,8 +24,14 @@ public class CollectScore : MonoBehaviour
         TimeTillScoreCalculation -= Time.deltaTime;
         if (TimeTillScoreCalculation < 0.0f)
         {
-            gridPlacementObj.GetComponent<GridPlacement>().isCalculatingScore = true;
+            isCalculatingScore = true;
             TimeTillScoreCalculation = TimeBetweenScoreCalculations;
+            gridPlacement.StartScoreCalculation(TimeOfScoreCalculation);
+        }
+
+        if (isCalculatingScore)
+        {
+            isCalculatingScore = !gridPlacement.DoScoreCalculationUpdateStep();
         }
     }
 }
