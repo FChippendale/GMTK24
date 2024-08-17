@@ -925,9 +925,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPlacementObj: {fileID: 929727125}
-  TimeTillScoreCalculation: 3
+  measuringScaleObj: {fileID: 846604039}
   TimeBetweenScoreCalculations: 2
   TimeOfScoreCalculation: 1
+  numberOfTaxes: 0
+  TimeBetweenTax: 2
 --- !u!4 &977104240
 Transform:
   m_ObjectHideFlags: 0

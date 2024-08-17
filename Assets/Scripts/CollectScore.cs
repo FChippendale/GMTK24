@@ -6,32 +6,52 @@ public class CollectScore : MonoBehaviour
 {
     [SerializeField]
     private GameObject gridPlacementObj;
+    [SerializeField]
+    private GameObject measuringScaleObj;
+
     private GridPlacement gridPlacement;
 
-    public float TimeTillScoreCalculation = 0.0f;
+    float timeTillScoreCalculation = 0.0f;
     public float TimeBetweenScoreCalculations = 3.0f;
     public float TimeOfScoreCalculation = 2.0f;
+
+
+    float timeTillTax = 0.0f;
+    [SerializeField]
+    int numberOfTaxes = 0;
+    public float TimeBetweenTax = 2.0f;
+
 
     bool isCalculatingScore = false;
 
     void Start()
     {
         gridPlacement = gridPlacementObj.GetComponent<GridPlacement>();
+        numberOfTaxes = 0;
     }
 
     void Update()
     {
-        TimeTillScoreCalculation -= Time.deltaTime;
-        if (TimeTillScoreCalculation < 0.0f)
+        timeTillScoreCalculation -= Time.deltaTime;
+        if (timeTillScoreCalculation < 0.0f)
         {
             isCalculatingScore = true;
-            TimeTillScoreCalculation = TimeBetweenScoreCalculations;
+            timeTillScoreCalculation = TimeBetweenScoreCalculations;
             gridPlacement.StartScoreCalculation(TimeOfScoreCalculation);
         }
 
         if (isCalculatingScore)
         {
             isCalculatingScore = !gridPlacement.DoScoreCalculationUpdateStep();
+        }
+
+
+        timeTillTax -= Time.deltaTime;
+        if (timeTillTax < 0.0f)
+        {
+            measuringScaleObj.SendMessage("AddTax", numberOfTaxes * 2);
+            numberOfTaxes += 1;
+            timeTillTax = TimeBetweenTax;
         }
     }
 }
