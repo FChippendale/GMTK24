@@ -34,4 +34,12 @@ public class MeasuringScale : MonoBehaviour
         BucketRHS.position = BeamRHS.position;
         BucketLHS.position = BeamLHS.position;
     }
+
+    public void FactoryScoreUpdate(int amount) {
+        lhs += amount;
+    }
+
+    public void AddTax(float amount) {
+        rhs += amount;
+    }
 }

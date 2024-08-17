@@ -48,7 +48,7 @@ public class FactoryBehaviour : MonoBehaviour
         return lastCommittedScore;
     }
 
-    public void AddScoreToCalculation(List<GameObject> neighbours)
+    public int AddScoreToCalculation(List<GameObject> neighbours)
     {
         lastScore = 0;
         switch (traversalType)
@@ -85,6 +85,7 @@ public class FactoryBehaviour : MonoBehaviour
         {
             newObject.GetComponent<TMP_Text>().SetText("+" + lastScore.ToString());
         }
+        return lastScore;
     }
 
 }
