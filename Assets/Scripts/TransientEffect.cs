@@ -8,8 +8,10 @@ using UnityEngine.Tilemaps;
 
 public class TransientEffect : MonoBehaviour
 {
+    public float ttl = 1.0f;
+    
     void Start()
     {
-        Destroy(gameObject, 1.0f);
+        Destroy(gameObject, ttl);
     }
 }
