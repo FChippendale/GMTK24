@@ -1,28 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 
 public class GridPlacement : MonoBehaviour
 {
     public MeasuringScale measuringScale;
 
-    private TileGrid grid = new TileGrid();
+    private readonly TileGrid grid = new();
 
     float TimePerIncrementalScoreUpdate = 0.0f;
     float timeTillNextIncrementalScoreCalculation = 0.1f;
 
 
     int currentTraversalIndex = 0;
-    List<GameObject> orderAdded = new List<GameObject>();
+    readonly List<GameObject> orderAdded = new();
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     public void StartScoreCalculation(float targetTime)
     {
