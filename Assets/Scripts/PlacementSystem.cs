@@ -26,7 +26,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Camera sceneCamera;
 
-    private void TryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
+    private bool TryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
     {
         GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(gridPosition), Quaternion.identity);
 
@@ -35,7 +35,7 @@ public class PlacementSystem : MonoBehaviour
         {
             // Failed to place tile
             Destroy(toPlace);
-            return;
+            return false;
         }
 
         TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
@@ -48,6 +48,8 @@ public class PlacementSystem : MonoBehaviour
 
         FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
         behaviour.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
+
+        return true;
     }
 
     private void Start()
@@ -60,20 +62,42 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         // get mouse grid position and convert back to screen pos
-        Vector3Int gridPosition = inputManager.GetSelectedGridPosition();
+        GridPosition gridPosition = inputManager.GetSelectedGridPosition();
 
-        Vector3 indicatorPosition = grid.CellToWorld(gridPosition);
+        if (gridPosition.type == PositionType.outside_grid)
+        {
+            // Cursor is not in the grid, there's nothing to do.
+            return;
+        }
+
+        // Render an indicator on the active tile.
+        Vector3 indicatorPosition = grid.CellToWorld(gridPosition.position);
 
         // move sprite back a bit so it renders on the camera
         indicatorPosition.z += 1f;
 
         // position sprite at calculated position
         cellIndicator.transform.position = indicatorPosition;
-        cellIndicator.GetComponent<SpriteRenderer>().material.color = factoryToPlace.GetComponent<FactoryBehaviour>().factoryColor;
 
-        if (Input.GetMouseButtonDown((int)MouseButton.Left))
+        Color colour;
+
+        if (gridPosition.type == PositionType.valid)
         {
-            TryAddFactoryAtPosition(gridPosition, false);
+            colour = factoryToPlace.GetComponent<FactoryBehaviour>().factoryColor;
+
+            if (Input.GetMouseButtonDown((int)MouseButton.Left))
+            {
+                if (!TryAddFactoryAtPosition(gridPosition.position, false))
+                {
+                    colour = Color.red.WithAlpha(0.5f);
+                }
+            }
         }
+        else
+        {
+            colour = (Input.GetMouseButtonDown((int)MouseButton.Left) ? Color.red : Color.gray).WithAlpha(0.5f);
+        }
+
+        cellIndicator.GetComponent<SpriteRenderer>().material.color = colour;
     }
 }

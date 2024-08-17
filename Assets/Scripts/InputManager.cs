@@ -1,5 +1,18 @@
 using UnityEngine;
 
+public enum PositionType
+{
+    valid,
+    invalid,
+    outside_grid
+}
+
+public struct GridPosition
+{
+    public Vector3Int position;
+    public PositionType type;
+}
+
 public class InputManager : MonoBehaviour
 {
     [SerializeField]
@@ -7,23 +20,28 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     private Grid grid;
     [SerializeField]
-    private RectTransform gridScreenArea;
+    private RectTransform validGameArea;
+    [SerializeField]
+    private RectTransform gameArea;
 
-    private Vector3Int lastPosition = new(0, 0, 0);
 
     // returns grid position mouse is currently over
-    public Vector3Int GetSelectedGridPosition()
+    public GridPosition GetSelectedGridPosition()
     {
-        Vector3 mousePos = Input.mousePosition;
-        if (!RectTransformUtility.RectangleContainsScreenPoint(gridScreenArea, mousePos, sceneCamera))
-        {
-            return lastPosition;
-        }
+        GridPosition result;
 
+        Vector3 mousePos = Input.mousePosition;
         Vector3 worldPos = sceneCamera.ScreenToWorldPoint(mousePos);
-        Vector3Int gridPosition = grid.WorldToCell(worldPos);
-        gridPosition.z = 0;
-        lastPosition = gridPosition;
-        return gridPosition;
+        result.position = grid.WorldToCell(worldPos);
+        result.position.z = 0;
+
+        bool inGrid = RectTransformUtility.RectangleContainsScreenPoint(validGameArea, mousePos, sceneCamera);
+        bool inGameArea = RectTransformUtility.RectangleContainsScreenPoint(gameArea, mousePos, sceneCamera);
+
+        result.type = inGrid ? PositionType.valid :
+                        inGameArea ? PositionType.invalid :
+                        PositionType.outside_grid;
+
+        return result;
     }
 }
