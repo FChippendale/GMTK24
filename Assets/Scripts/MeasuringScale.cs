@@ -40,19 +40,22 @@ public class MeasuringScale : MonoBehaviour
         float normalizedDiff = diff / (Math.Min(Math.Abs(lhs), Math.Abs(rhs)) + 1);
         float requestAngle = (float)(180 * Math.Atan(normalizedDiff / Stickiness) / Math.PI);
 
-        if (Math.Abs(requestAngle - lastAngle) > MaxAngleChangePerFrame) {
+        if (Math.Abs(requestAngle - lastAngle) > MaxAngleChangePerFrame)
+        {
             lastAngle += Math.Sign(requestAngle - lastAngle) * MaxAngleChangePerFrame;
-        } else {
+        }
+        else
+        {
             lastAngle = requestAngle;
         }
 
         Beam.localEulerAngles = new Vector3(0, 0, lastAngle);
 
         BucketRHS.position = BeamRHS.position;
-        TaxParticleSystemObj.transform.position = BeamRHS.position;
+        TaxParticleSystemObj.transform.position = new Vector3(BucketRHS.position.x, TaxParticleSystemObj.transform.position.y, TaxParticleSystemObj.transform.position.z);
 
         BucketLHS.position = BeamLHS.position;
-        MoneyParticleSystemObj.transform.position = BeamLHS.position;
+        MoneyParticleSystemObj.transform.position = new Vector3(BeamLHS.position.x, MoneyParticleSystemObj.transform.position.y, MoneyParticleSystemObj.transform.position.z);
     }
 
     public void FactoryScoreUpdate(int amount)
