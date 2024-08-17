@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0.1}
   m_AnchorMax: {x: 0.9, y: 0.9}
-  m_AnchoredPosition: {x: 32.000004, y: 0}
+  m_AnchoredPosition: {x: 32, y: 0}
   m_SizeDelta: {x: 63.999992, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9827645
@@ -829,9 +829,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe34bfbea0a25364497e87527a710629, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FactoryButton0: {fileID: 1189713434}
-  FactoryButton1: {fileID: 1993756542}
-  FactoryButton2: {fileID: 477943787}
   factoryToPlace: {fileID: 119804692318143694, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
 --- !u!114 &732832397
 MonoBehaviour:
@@ -892,8 +889,6 @@ MonoBehaviour:
   tileAsset: {fileID: 11400000, guid: ef4c586c4e17f214dbeec74b19fc83f6, type: 2}
   cellIndicator: {fileID: 664313176}
   factoryToPlace: {fileID: 3012125723330971411, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
-  canvas: {fileID: 1000363375}
-  text: {fileID: 7914618332485724548, guid: 1cf656735179574938415033c99af16b, type: 3}
   sceneCamera: {fileID: 519420031}
 --- !u!114 &732832401
 MonoBehaviour:
@@ -925,6 +920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridPlacementObj: {fileID: 732832393}
   measuringScaleObj: {fileID: 846604039}
+  gridPlacement: {fileID: 732832399}
   TimeBetweenScoreCalculations: 2
   TimeOfScoreCalculation: 1
   numberOfTaxes: 0

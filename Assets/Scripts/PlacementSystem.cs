@@ -20,9 +20,6 @@ public class PlacementSystem : MonoBehaviour
 
     private GridPlacement gridPlacement;
 
-    public GameObject canvas;
-    public GameObject text;
-
     [SerializeField]
     private Camera sceneCamera;
 
@@ -58,6 +55,11 @@ public class PlacementSystem : MonoBehaviour
     {
         gridPlacement = GetComponent<GridPlacement>();
         TryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
+    }
+
+    public void TimerTick()
+    {
+
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position

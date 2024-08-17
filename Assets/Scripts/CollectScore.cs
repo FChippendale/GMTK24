@@ -9,6 +9,7 @@ public class CollectScore : MonoBehaviour
     [SerializeField]
     private GameObject measuringScaleObj;
 
+    [SerializeField]
     private GridPlacement gridPlacement;
 
     float timeTillScoreCalculation = 0.0f;
@@ -26,7 +27,6 @@ public class CollectScore : MonoBehaviour
 
     void Start()
     {
-        gridPlacement = gridPlacementObj.GetComponent<GridPlacement>();
         numberOfTaxes = 0;
     }
 
