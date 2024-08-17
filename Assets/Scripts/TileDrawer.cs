@@ -32,7 +32,6 @@ public class TileDrawer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        // traversalType = GetComponent<FactoryBehaviour>().traversalType;
         drawTile();
     }
 
@@ -50,7 +49,6 @@ public class TileDrawer : MonoBehaviour
         {
             return;
         }
-        // traversalType = GetComponent<FactoryBehaviour>().traversalType;
         Color tempColor = mapping[traversalType];
         tempColor.a = (active ? 1.0f : 0.1f);
 
