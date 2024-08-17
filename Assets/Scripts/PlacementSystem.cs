@@ -44,6 +44,9 @@ public class PlacementSystem : MonoBehaviour
 
         TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
         drawer.tilemap = tilemap;
+
+        // pass factory behaviour on creation to allow redrawing from TileDrawer
+        drawer.traversalType = toPlace.GetComponent<FactoryBehaviour>().traversalType;
         drawer.position = gridPosition;
 
         FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
