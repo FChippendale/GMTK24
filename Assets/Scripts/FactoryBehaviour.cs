@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -77,6 +78,14 @@ public class FactoryBehaviour : MonoBehaviour
         );
         GameObject newObject = GameObject.Instantiate(text, canvas.transform);
         newObject.GetComponent<RectTransform>().anchoredPosition = canvas_position - new Vector2(20.0f, 25.0f);
+        if (lastScore < 0)
+        {
+            newObject.GetComponent<TMP_Text>().SetText(lastScore.ToString());
+        }
+        else if (lastScore > 0)
+        {
+            newObject.GetComponent<TMP_Text>().SetText("+" + lastScore.ToString());
+        }
     }
 
 }
