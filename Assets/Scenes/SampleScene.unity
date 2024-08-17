@@ -735,6 +735,7 @@ MonoBehaviour:
   cellIndicator: {fileID: 664313176}
   factoryToPlace: {fileID: 3012125723330971411, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
   sceneCamera: {fileID: 519420031}
+  nextPlacementHint: {fileID: 1189713432}
 --- !u!114 &732832401
 MonoBehaviour:
   m_ObjectHideFlags: 0

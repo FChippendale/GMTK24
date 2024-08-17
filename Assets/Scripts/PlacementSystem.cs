@@ -1,7 +1,7 @@
-using System;
+using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlacementSystem : MonoBehaviour
@@ -25,7 +25,10 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Camera sceneCamera;
 
-    private bool TryAddFactoryAtPosition(Vector3Int gridPosition, bool allow_island = false)
+    public GameObject nextPlacementHint;
+
+
+    private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false)
     {
         GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(gridPosition), Quaternion.identity);
 
@@ -40,13 +43,14 @@ public class PlacementSystem : MonoBehaviour
         TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
         drawer.tilemap = tilemap;
 
+        FactoryBehaviour factoryBehaviourToPlace = toPlace.GetComponent<FactoryBehaviour>();
+
         // pass factory behaviour on creation to allow redrawing from TileDrawer
-        drawer.traversalType = toPlace.GetComponent<FactoryBehaviour>().traversalType;
-        drawer.color = toPlace.GetComponent<FactoryBehaviour>().getColor();
+        drawer.traversalType = factoryBehaviourToPlace.traversalType;
+        drawer.color = factoryBehaviourToPlace.getColor();
         drawer.position = gridPosition;
 
-        FactoryBehaviour behaviour = toPlace.GetComponent<FactoryBehaviour>();
-        behaviour.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
+        factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
 
         gameObject.SendMessage("FactoryAdded", gridPosition);
         assignNextFactoryType();
@@ -57,7 +61,7 @@ public class PlacementSystem : MonoBehaviour
     private void Start()
     {
         gridPlacement = GetComponent<GridPlacement>();
-        TryAddFactoryAtPosition(new Vector3Int(0, 0, 0), true);
+        TryAddTileAtGridPosition(new Vector3Int(0, 0, 0), true);
     }
 
     void assignNextFactoryType()
@@ -68,16 +72,17 @@ public class PlacementSystem : MonoBehaviour
             FactoryBehaviour.TraversalType.sum_of_any_adjacent,
         };
 
-        FactoryBehaviour.TraversalType type = traversalTypes[UnityEngine.Random.Range(0, traversalTypes.Count)];
+        FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, traversalTypes.Count)];
         factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = type;
+        nextPlacementHint.GetComponent<Image>().color = factoryToPlace.GetComponent<FactoryBehaviour>().getColor();
     }
 
     public void PlacementDeadlineTimerTick()
     {
         List<(int, int)> possiblePlacements = gridPlacement.GetPossiblePlacements();
-        var (x, y) = possiblePlacements[UnityEngine.Random.Range(0, possiblePlacements.Count)];
-        gridPlacement.TryAddToGrid(factoryToPlace, x, y, true);
-        assignNextFactoryType();
+        var (x, y) = possiblePlacements[Random.Range(0, possiblePlacements.Count)];
+        var (center_x, center_y) = gridPlacement.GetCenterTile();
+        TryAddTileAtGridPosition(new Vector3Int(center_x - x, center_y - y, 0), true);
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position
@@ -109,7 +114,7 @@ public class PlacementSystem : MonoBehaviour
 
             if (Input.GetMouseButtonDown((int)MouseButton.Left))
             {
-                if (!TryAddFactoryAtPosition(gridPosition.position, false))
+                if (!TryAddTileAtGridPosition(gridPosition.position, false))
                 {
                     colour = Color.red.WithAlpha(0.5f);
                 }
