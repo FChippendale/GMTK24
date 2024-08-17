@@ -23,12 +23,13 @@ public class FactoryBehaviour : MonoBehaviour
     }
     public TraversalType traversalType;
 
-    public Color getColor()
+    public Color GetColor()
     {
-        Dictionary<FactoryBehaviour.TraversalType, Color> colorMapping = new Dictionary<FactoryBehaviour.TraversalType, Color>{
-            {FactoryBehaviour.TraversalType.constant_integer_amount, new Color32(106, 137, 204,255)},
-            {FactoryBehaviour.TraversalType.largest_adjacent, new Color32(184, 233, 148,255)},
-            {FactoryBehaviour.TraversalType.sum_of_any_adjacent, new Color32(250, 211, 144,255)},
+        Dictionary<TraversalType, Color> colorMapping = new()
+        {
+            {TraversalType.constant_integer_amount, new Color32(106, 137, 204,255)},
+            {TraversalType.largest_adjacent, new Color32(184, 233, 148,255)},
+            {TraversalType.sum_of_any_adjacent, new Color32(250, 211, 144,255)},
         };
         return colorMapping[traversalType];
     }
@@ -78,11 +79,11 @@ public class FactoryBehaviour : MonoBehaviour
         }
 
         RectTransform CanvasRect = canvas.GetComponent<RectTransform>();
-        Vector2 canvas_position = new Vector2(
+        Vector2 canvas_position = new(
             (viewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f),
             (viewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)
         );
-        GameObject newObject = GameObject.Instantiate(text, canvas.transform);
+        GameObject newObject = Instantiate(text, canvas.transform);
         newObject.GetComponent<RectTransform>().anchoredPosition = canvas_position - new Vector2(20.0f, 25.0f);
         if (lastScore < 0)
         {

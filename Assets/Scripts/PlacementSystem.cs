@@ -15,7 +15,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private TileBase tileAsset;
     [SerializeField]
-    private GameObject cellIndicator;
+    private CellIndicator cellIndicator;
 
     [SerializeField]
     private GameObject factoryToPlace;
@@ -47,13 +47,13 @@ public class PlacementSystem : MonoBehaviour
 
         // pass factory behaviour on creation to allow redrawing from TileDrawer
         drawer.traversalType = factoryBehaviourToPlace.traversalType;
-        drawer.color = factoryBehaviourToPlace.getColor();
+        drawer.color = factoryBehaviourToPlace.GetColor();
         drawer.position = gridPosition;
 
         factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
 
         gameObject.SendMessage("FactoryAdded", gridPosition);
-        assignNextFactoryType();
+        AssignNextFactoryType();
 
         return true;
     }
@@ -64,7 +64,7 @@ public class PlacementSystem : MonoBehaviour
         TryAddTileAtGridPosition(new Vector3Int(0, 0, 0), true);
     }
 
-    void assignNextFactoryType()
+    void AssignNextFactoryType()
     {
         List<FactoryBehaviour.TraversalType> traversalTypes = new List<FactoryBehaviour.TraversalType>{
             FactoryBehaviour.TraversalType.constant_integer_amount,
@@ -74,7 +74,7 @@ public class PlacementSystem : MonoBehaviour
 
         FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, traversalTypes.Count)];
         factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = type;
-        nextPlacementHint.GetComponent<Image>().color = factoryToPlace.GetComponent<FactoryBehaviour>().getColor();
+        nextPlacementHint.GetComponent<Image>().color = factoryToPlace.GetComponent<FactoryBehaviour>().GetColor();
     }
 
     public void PlacementDeadlineTimerTick()
@@ -100,31 +100,25 @@ public class PlacementSystem : MonoBehaviour
         // Render an indicator on the active tile.
         Vector3 indicatorPosition = grid.CellToWorld(gridPosition.position);
 
-        // move sprite back a bit so it renders on the camera
-        indicatorPosition.z += 1f;
-
-        // position sprite at calculated position
-        cellIndicator.transform.position = indicatorPosition;
-
-        Color colour;
-
         if (gridPosition.type == PositionType.valid)
         {
-            colour = factoryToPlace.GetComponent<FactoryBehaviour>().getColor();
+            cellIndicator.Reposition(indicatorPosition,
+                factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
 
-            if (Input.GetMouseButtonDown((int)MouseButton.Left))
+            if (Input.GetMouseButtonDown((int)MouseButton.Left) && !TryAddTileAtGridPosition(gridPosition.position, false))
             {
-                if (!TryAddTileAtGridPosition(gridPosition.position, false))
-                {
-                    colour = Color.red.WithAlpha(0.5f);
-                }
+                cellIndicator.StartInvalidAnimation();
             }
         }
         else
         {
-            colour = (Input.GetMouseButtonDown((int)MouseButton.Left) ? Color.red : Color.gray).WithAlpha(0.5f);
-        }
+            cellIndicator.Reposition(indicatorPosition,
+                /* Good Samaritan */ new Color32(0x3c, 0x63, 0x82, 0xff));
 
-        cellIndicator.GetComponent<SpriteRenderer>().material.color = colour;
+            if (Input.GetMouseButtonDown((int)MouseButton.Left))
+            {
+                cellIndicator.StartInvalidAnimation();
+            }
+        }
     }
 }

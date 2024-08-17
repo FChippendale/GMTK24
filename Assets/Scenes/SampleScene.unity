@@ -564,6 +564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 664313177}
   - component: {fileID: 664313178}
+  - component: {fileID: 664313179}
   m_Layer: 0
   m_Name: CursorIndicator
   m_TagString: Untagged
@@ -606,7 +607,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 9920c1f1781549a46ba081a2a15a16ec, type: 3}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -638,6 +639,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &664313179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664313176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec960990109d0b5f85d576d2d90dcd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invalidTime: 0.4
 --- !u!1 &732832393
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,7 +746,7 @@ MonoBehaviour:
   grid: {fileID: 1254472424}
   tilemap: {fileID: 1605598512}
   tileAsset: {fileID: 11400000, guid: ef4c586c4e17f214dbeec74b19fc83f6, type: 2}
-  cellIndicator: {fileID: 664313176}
+  cellIndicator: {fileID: 664313179}
   factoryToPlace: {fileID: 3012125723330971411, guid: 539738a5c267e61d593e36ff741a44e5, type: 3}
   sceneCamera: {fileID: 519420031}
   nextPlacementHint: {fileID: 1189713432}
