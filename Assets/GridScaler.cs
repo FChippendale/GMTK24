@@ -11,7 +11,8 @@ public class GridScaler : MonoBehaviour
     public float shrinkSlack = 0.9f;
 
     private int factoryCount = 0;
-    private float threshold = 4.0f;
+    private float thresholdHi = 4.0f;
+    private float thresholdLo = 0.0f;
     private Vector3 initialScale;
     private float currentMultiplier = 1.0f;
     private float targetMultiplier = 1.0f;
@@ -32,15 +33,23 @@ public class GridScaler : MonoBehaviour
     {
         var (count, _) = info;
         factoryCount -= count;
+
+        while (factoryCount <= thresholdLo)
+        {
+            thresholdLo /= thresholdMultiplier;
+            thresholdHi /= thresholdMultiplier;
+            targetMultiplier /= scaleMultiplier;
+        }
     }
 
     public void TilesAdded(int count)
     {
         factoryCount += count;
 
-        if (factoryCount >= threshold)
+        while (factoryCount >= thresholdHi)
         {
-            threshold *= thresholdMultiplier;
+            thresholdLo = thresholdHi;
+            thresholdHi *= thresholdMultiplier;
             targetMultiplier *= scaleMultiplier;
         }
     }
