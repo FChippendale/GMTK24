@@ -175,30 +175,16 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
 
-        if (gridPosition.type == PositionType.valid)
-        {
-            DrawPlacementHint(gridPosition.position, factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
 
-            if (Input.GetMouseButtonDown((int)MouseButton.Left) && !TryAddTileAtGridPosition(gridPosition.position, false))
-            {
-                foreach (CellIndicator indicator in CellIndicators)
-                {
-                    triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
-                    indicator.StartInvalidAnimation();
-                }
-            }
-        }
-        else
-        {
-            DrawPlacementHint(gridPosition.position, /* Good Samaritan */ new Color32(0x3c, 0x63, 0x82, 0xff));
 
-            if (Input.GetMouseButtonDown((int)MouseButton.Left))
+        DrawPlacementHint(gridPosition.position, factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
+
+        if (Input.GetMouseButtonDown((int)MouseButton.Left) && !TryAddTileAtGridPosition(gridPosition.position, false))
+        {
+            foreach (CellIndicator indicator in CellIndicators)
             {
-                foreach (CellIndicator indicator in CellIndicators)
-                {
-                    triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
-                    indicator.StartInvalidAnimation();
-                }
+                triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
+                indicator.StartInvalidAnimation();
             }
         }
     }
