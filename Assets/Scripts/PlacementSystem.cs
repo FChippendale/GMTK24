@@ -111,11 +111,6 @@ public class PlacementSystem : MonoBehaviour
         tileToPlace = TileBag.GetRandomShape();
     }
 
-    public void PlacementDeadlineTimerTick()
-    {
-    }
-
-
     private void DrawPlacementHint(Vector3Int mouseGridPosition, Color color)
     {
         List<(int, int)> unityCoords = TileBag.ConvertToUnityCoords(tileToPlace, mouseGridPosition.x, mouseGridPosition.y);
