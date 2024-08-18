@@ -6,8 +6,6 @@ using UnityEngine.Tilemaps;
 
 public class GridPlacement : MonoBehaviour
 {
-    public MeasuringScale measuringScale;
-
     private readonly TileGrid grid = new();
 
     float TimePerIncrementalScoreUpdate = 0.0f;
@@ -32,13 +30,6 @@ public class GridPlacement : MonoBehaviour
         {
             return false;
         }
-
-        // Calculate next part of score
-        GameObject toCalculate = orderAdded[currentTraversalIndex];
-        var (x, y) = grid.GetLocation(toCalculate);
-        List<GameObject> neighbours = grid.GetNeighbours(x, y);
-        int score = toCalculate.GetComponent<FactoryBehaviour>().AddScoreToCalculation(neighbours);
-        measuringScale.SendMessage("FactoryScoreUpdate", score);
 
         currentTraversalIndex += 1;
         if (currentTraversalIndex == orderAdded.Count)
