@@ -9,6 +9,8 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private InputManager inputManager;
     [SerializeField]
+    private TriggerSFX triggerSFX;
+    [SerializeField]
     private Grid grid;
     [SerializeField]
     private Tilemap tilemap;
@@ -73,7 +75,7 @@ public class PlacementSystem : MonoBehaviour
 
             factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
         }
-
+        triggerSFX.PlaySound(TriggerSFX.SoundType.placement);
         gameObject.SendMessage("FactoryAdded", gridPosition);
         AssignNextFactoryType();
 
@@ -142,6 +144,7 @@ public class PlacementSystem : MonoBehaviour
             {
                 foreach (CellIndicator indicator in CellIndicators)
                 {
+                    triggerSFX.PlaySound(TriggerSFX.SoundType.invalid_placement);
                     indicator.StartInvalidAnimation();
                 }
             }
@@ -154,6 +157,7 @@ public class PlacementSystem : MonoBehaviour
             {
                 foreach (CellIndicator indicator in CellIndicators)
                 {
+                    triggerSFX.PlaySound(TriggerSFX.SoundType.invalid_placement);
                     indicator.StartInvalidAnimation();
                 }
             }
