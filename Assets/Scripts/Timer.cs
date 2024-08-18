@@ -12,6 +12,10 @@ public class Timer : MonoBehaviour
 
     public float intervalBetweenEvents = 8.0f;
 
+    public float targetSize = 1.0f;
+    public float currentSize = 1.0f;
+    public float pulseRate = 1.0f;
+
     public string message = "TimerTick";
 
     public TextMeshProUGUI ui;
@@ -28,7 +32,9 @@ public class Timer : MonoBehaviour
 
         if (Math.Floor(Time.time) > Math.Floor(lastTick) && Time.time - lastEvent > intervalBetweenEvents - 3.0f)
         {
+            currentSize = 1.5f;
             triggerSFX.PlaySound(TriggerSFX.SoundType.timer_tick);
+            ui.color = new Color32(229, 80, 57, 255);
         }
         lastTick = Time.time;
 
@@ -40,10 +46,16 @@ public class Timer : MonoBehaviour
         }
 
         ui.SetText("{0:1} s", lastEvent + intervalBetweenEvents - Time.time);
+
+        currentSize = Mathf.MoveTowards(currentSize,
+            targetSize, pulseRate * Time.deltaTime);
+        ui.transform.localScale = Vector3.one * currentSize;
     }
 
     public void Reset()
     {
         lastEvent = Time.time;
+        currentSize = 1.0f;
+        ui.color = Color.black;
     }
 }

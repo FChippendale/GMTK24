@@ -34,8 +34,10 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private DeathCircle deathCircle;
 
+    [SerializeField]
+    private GameObject AutomaticPlaceParticles;
 
-    private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false)
+    private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false, bool is_automatic_placement = false)
     {
         var (center_x, center_y) = gridPlacement.GetCenterTile();
 
@@ -78,7 +80,16 @@ public class PlacementSystem : MonoBehaviour
 
             factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
         }
-        triggerSFX.PlaySound(TriggerSFX.GetPlacementSound());
+
+        if (is_automatic_placement)
+        {
+            triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
+            AutomaticPlaceParticles.SendMessage("ZapTo", gridItems[0].transform.position);
+        }
+        else
+        {
+            triggerSFX.PlaySound(TriggerSFX.GetPlacementSound());
+        }
 
         // Has the user scored any points?
         gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
@@ -99,17 +110,19 @@ public class PlacementSystem : MonoBehaviour
         return true;
     }
 
-    void PlacementDeadlineTimerTick(int attempt = 0)
+    void AttemptAutomaticPlacement(int attempt = 0)
     {
         // Randomly rotate piece
         int rotations = UnityEngine.Random.Range(0, 6);
-        for (int i = 0; i < rotations; i++) {
+        for (int i = 0; i < rotations; i++)
+        {
             RotateTileBag(true);
         }
 
         // Get all possible placements accounting for zeroing errors
         HashSet<(int, int)> toTry = new HashSet<(int, int)>();
-        foreach (var (x, y) in gridPlacement.GetPossiblePlacements()) {
+        foreach (var (x, y) in gridPlacement.GetPossiblePlacements())
+        {
             toTry.Add((x, y));
             toTry.Add((x + 1, y));
             toTry.Add((x + 1, y + 1));
@@ -121,29 +134,38 @@ public class PlacementSystem : MonoBehaviour
 
         var (center_x, center_y) = gridPlacement.GetCenterTile();
         List<(int, int)> placements = new List<(int, int)>(toTry);
-        placements.Sort(Comparer<(int, int)>.Create(((int, int) loc1, (int, int) loc2) => {
+        placements.Sort(Comparer<(int, int)>.Create(((int, int) loc1, (int, int) loc2) =>
+        {
             int lhs_x = loc1.Item1 - center_x;
             int lhs_y = loc1.Item2 - center_y;
             int rhs_x = loc2.Item1 - center_x;
             int rhs_y = loc2.Item2 - center_y;
 
-            return (lhs_x * lhs_x + lhs_y * lhs_y).CompareTo(rhs_x * rhs_x  + rhs_y * rhs_y);
+            return (lhs_x * lhs_x + lhs_y * lhs_y).CompareTo(rhs_x * rhs_x + rhs_y * rhs_y);
         }));
 
-        foreach (var (x, y) in placements) {
-            if (TryAddTileAtGridPosition(new Vector3Int(x - center_x, y - center_y, 0))) {
+        foreach (var (x, y) in placements)
+        {
+            if (TryAddTileAtGridPosition(new Vector3Int(x - center_x, y - center_y, 0), is_automatic_placement: true))
+            {
                 // Successfully added. Done!
                 return;
             }
         }
 
-        if (attempt < 4) {
-            PlacementDeadlineTimerTick(attempt + 1);
+        if (attempt < 4)
+        {
+            AttemptAutomaticPlacement(attempt + 1);
             return;
         }
 
         // We're stuck. End the game. The board was probably fill anyway
         gameObject.SendMessage("Dead");
+    }
+
+    public void PlacementDeadlineTimerTick()
+    {
+        AttemptAutomaticPlacement();
     }
 
     private void Start()
@@ -245,9 +267,10 @@ public class PlacementSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown((int)MouseButton.Left) && !TryAddTileAtGridPosition(gridPosition.position, false))
         {
+            triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
+
             foreach (CellIndicator indicator in CellIndicators)
             {
-                triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
                 indicator.StartInvalidAnimation();
             }
         }
