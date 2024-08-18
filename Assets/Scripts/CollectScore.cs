@@ -9,9 +9,24 @@ public class CollectScore : MonoBehaviour
     [SerializeField]
     private int score = 0;
 
+    public float pulseRate = 1.0f;
+    public float bigScorePulseSize = 2.0f;
+    public float smallScorePulseSize = 1.2f;
+
+    public float targetSize = 1.0f;
+    public float currentSize = 1.0f;
+
+
     private void Start()
     {
         UpdateScore();
+    }
+
+    private void Update()
+    {
+        currentSize = Mathf.MoveTowards(currentSize,
+            targetSize, pulseRate * Time.deltaTime);
+        text.transform.localScale = Vector3.one * currentSize;
     }
 
     private void UpdateScore()
@@ -24,11 +39,24 @@ public class CollectScore : MonoBehaviour
         var (count, encirclement_count) = info;
         score += 1000 * (count + encirclement_count * encirclement_count);
         UpdateScore();
+
+        if (encirclement_count > 5)
+        {
+            currentSize = bigScorePulseSize;
+            pulseRate = 2;
+        }
+        else
+        {
+            currentSize = smallScorePulseSize;
+            pulseRate = 1;
+        }
     }
 
     public void TilesAdded(int count)
     {
         score += 100 * count;
         UpdateScore();
+        currentSize = smallScorePulseSize;
+        pulseRate = 1;
     }
 }
