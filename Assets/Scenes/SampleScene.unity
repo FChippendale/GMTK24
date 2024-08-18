@@ -1202,6 +1202,7 @@ MonoBehaviour:
   scaleMultiplier: 0.7
   thresholdMultiplier: 2
   animationRate: 0.3
+  shrinkSlack: 0.9
 --- !u!114 &732832404
 MonoBehaviour:
   m_ObjectHideFlags: 0

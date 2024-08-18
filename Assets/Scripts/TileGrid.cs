@@ -235,13 +235,17 @@ public class TileGrid
         while (CellsToExplore.Count > 0)
         {
             var (x, y) = CellsToExplore.Dequeue();
-            if (tiles[x, y].state == State.occupied && tiles[x, y].type == type)
-            {
-                continue;
-            }
 
             foreach ((int, int) loc in getNeighborLocs(x, y))
             {
+                if (tiles[x, y].state == State.occupied && tiles[x, y].type == type)
+                {
+                    // We're exploring a "blue" node, only explore non-blue children
+                    if (tiles[loc.Item1, loc.Item2].state != State.occupied || tiles[loc.Item1, loc.Item2].type != type)
+                    {
+                        continue;
+                    }
+                }
                 if (!CellsExplored.Contains(loc))
                 {
                     CellsToExplore.Enqueue(loc);
@@ -301,7 +305,12 @@ public class TileGrid
 
     public bool HasBreakableOccupier(int x, int y)
     {
-        return tiles[x, y].state == State.occupied && tiles[x, y].type != FactoryBehaviour.TraversalType.unbreakable_starting_tile;
+        return HasOccupier(x, y) && tiles[x, y].type != FactoryBehaviour.TraversalType.unbreakable_starting_tile;
+    }
+
+    public bool HasOccupier(int x, int y)
+    {
+        return tiles[x, y].state == State.occupied;
     }
 
     public void RemoveTile(int x, int y)

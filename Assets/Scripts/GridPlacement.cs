@@ -26,10 +26,26 @@ public class GridPlacement : MonoBehaviour
             return false;
         }
 
+        bool encircles_tiles = false;
         HashSet<(int, int)> tiles_to_destroy = new HashSet<(int, int)>(encircled_tiles);
+        foreach (var (x, y) in tiles_to_destroy)
+        {
+            if (grid.HasOccupier(x, y))
+            {
+                encircles_tiles = true;
+                break;
+            }
+        }
+
+        if (!encircles_tiles)
+        {
+            return false;
+        }
+
         tiles_to_destroy = grid.ExpandRingIntoTouching(tiles_to_destroy, type);
         tiles_to_destroy = grid.ExpandByRing(tiles_to_destroy);
 
+        int tiles_to_break = 0;
         foreach (var (x, y) in tiles_to_destroy)
         {
             if (grid.HasBreakableOccupier(x, y))
@@ -37,8 +53,11 @@ public class GridPlacement : MonoBehaviour
                 GameObject tile = grid.GetOccupier(x, y);
                 tile.SendMessage("BreakingTile");
                 grid.RemoveTile(x, y);
+                tiles_to_break += 1;
             }
         }
+
+        gameObject.SendMessage("BreakingTiles", tiles_to_break);
         return true;
     }
 
