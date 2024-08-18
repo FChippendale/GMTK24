@@ -8,7 +8,7 @@ public class PopupController : MonoBehaviour
     public float duration = 2.0f;
 
     private float removalTime = 0.0f;
-    private readonly string[] goodMessages = new[] { "Cool", "Nice", "Super", "Great!" };
+    private readonly string[] goodMessages = new[] { "Cool", "Nice", "Super", "Great" };
 
     private readonly string[] greatMessages = new[] { "Wow!", "Massive!", "Awesome!", "Spectacular!" };
     void Start()
@@ -19,7 +19,8 @@ public class PopupController : MonoBehaviour
     void Update()
     {
         text.enabled = Time.time < removalTime;
-        if (removalTime - Time.time < 0.5 * duration) {
+        if (removalTime - Time.time < 0.5 * duration)
+        {
             text.color = text.color.WithAlpha((removalTime - Time.time) / (0.5f * duration));
         }
     }

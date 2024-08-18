@@ -6,16 +6,16 @@ public class GridScaler : MonoBehaviour
 {
     public Transform target;
 
-    public float scaleMultiplier = 0.7f;
+    public float scaleMultiplier = 0.68f;
     public float thresholdMultiplier = 2.0f;
     public float animationRate = 0.3f;
-    public float shrinkSlack = 0.9f;
-    public int thresholdCount = 5;
+    public int thresholdCount = 7;
 
     private int tileCount = 0;
     private readonly List<float> thresholds = new();
     private Vector3 initialScale;
     private float currentMultiplier = 1.0f;
+    [SerializeField]
     private float targetMultiplier = 1.0f;
 
     void Start()
