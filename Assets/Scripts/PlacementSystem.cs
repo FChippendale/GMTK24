@@ -31,6 +31,9 @@ public class PlacementSystem : MonoBehaviour
 
     public GameObject nextPlacementHint;
 
+    [SerializeField]
+    private DeathCircle deathCircle;
+
 
     private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false)
     {
@@ -79,6 +82,16 @@ public class PlacementSystem : MonoBehaviour
 
         // Has the user scored any points?
         gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
+
+        // Has the user died?
+        foreach ((int, int) coord in unityCoords)
+        {
+            if (deathCircle.IsDeathTile(coord))
+            {
+                gameObject.SendMessage("Dead");
+                return false;
+            }
+        }
 
         gameObject.SendMessage("TilesAdded", gridItems.Count);
         AssignNextFactoryType();
