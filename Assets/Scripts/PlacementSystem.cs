@@ -158,11 +158,13 @@ public class PlacementSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             // Clockwise rotation.
+            triggerSFX.PlaySound(TriggerSFX.SoundType.rotate);
             RotateTileBag(true);
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
             // Anti-clockwise rotation.
+            triggerSFX.PlaySound(TriggerSFX.SoundType.rotate);
             RotateTileBag(false);
         }
 

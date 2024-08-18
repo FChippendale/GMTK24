@@ -15,6 +15,7 @@ public class TriggerSFX : MonoBehaviour
     public AudioSource timerHitZero;
     public AudioSource scoreIncrease;
     public AudioSource scoreIncrease2;
+    public AudioSource rotate;
 
     public enum SoundType
     {
@@ -29,6 +30,7 @@ public class TriggerSFX : MonoBehaviour
         timer_zero,
         score_increase,
         score_increase2,
+        rotate,
     }
 
 
@@ -75,6 +77,7 @@ public class TriggerSFX : MonoBehaviour
             {SoundType.timer_zero, timerHitZero},
             {SoundType.score_increase, scoreIncrease},
             {SoundType.score_increase2, scoreIncrease2},
+            {SoundType.rotate, rotate},
         };
         soundMapping[sound_name].Play();
     }
