@@ -12,6 +12,6 @@ public class GameButtonController : MonoBehaviour
 
     public void Quit()
     {
-        return;
+        SceneManager.LoadScene("Menu");
     }
 }
