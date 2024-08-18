@@ -8,6 +8,7 @@ public class TriggerSFX : MonoBehaviour
     public AudioSource invalidPlacement;
     public AudioSource placement;
     public AudioSource timerTick;
+    public AudioSource timerHitZero;
 
     public enum SoundType
     {
@@ -15,6 +16,7 @@ public class TriggerSFX : MonoBehaviour
         invalid_placement,
         placement,
         timer_tick,
+        timer_zero,
     }
     
     public void PlaySound(SoundType sound_name)
@@ -25,6 +27,7 @@ public class TriggerSFX : MonoBehaviour
             {SoundType.invalid_placement, invalidPlacement},
             {SoundType.placement, placement},
             {SoundType.timer_tick, timerTick},
+            {SoundType.timer_zero, timerHitZero},
         };
         soundMapping[sound_name].Play();
     }
