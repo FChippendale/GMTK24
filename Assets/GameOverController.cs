@@ -5,10 +5,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[Serializable]
 struct LeaderboardEntry
 {
     public string name;
     public int score;
+}
+
+[Serializable]
+struct Leaderboard
+{
+    public List<LeaderboardEntry> entries;
 }
 
 public class GameOverController : MonoBehaviour
@@ -21,37 +28,48 @@ public class GameOverController : MonoBehaviour
     public List<TextMeshProUGUI> leaderboardNames;
     public List<TextMeshProUGUI> leaderboardScores;
 
-    private List<LeaderboardEntry> leaderboard = new();
-    private readonly int score = 0;
+    private Leaderboard leaderboard = new();
+    private int score = 0;
 
-    private static readonly string lastScoreKey = "LastScore";
-    private static readonly string leaderboardKey = "Leaderboard";
+    public static readonly string lastScoreKey = "LastScore";
+    public static readonly string leaderboardKey = "Leaderboard";
 
     // Start is called before the first frame update
     void Start()
     {
-        int score = PlayerPrefs.GetInt(lastScoreKey, 0);
+        score = PlayerPrefs.GetInt(lastScoreKey, 0);
 
         scoreField.text = score.ToString();
 
         if (PlayerPrefs.HasKey(leaderboardKey))
         {
             string serialized = PlayerPrefs.GetString(leaderboardKey);
-            leaderboard = JsonUtility.FromJson<List<LeaderboardEntry>>(serialized);
+            Debug.Log($"Loading leaderboard: {serialized}");
+            leaderboard = JsonUtility.FromJson<Leaderboard>(serialized);
+        }
+
+        foreach (var n in leaderboardNames)
+        {
+            n.text = "...";
+        }
+
+        foreach (var s in leaderboardScores)
+        {
+            s.text = "...";
         }
 
         int entries = Math.Min(leaderboardNames.Count,
-            Math.Min(leaderboardScores.Count, leaderboard.Count));
+            Math.Min(leaderboardScores.Count, leaderboard.entries.Count));
         for (int i = 0; i < entries; ++i)
         {
-            leaderboardScores[i].text = leaderboard[i].score.ToString();
-            leaderboardNames[i].text = leaderboard[i].name;
+            leaderboardScores[i].text = leaderboard.entries[i].score.ToString();
+            leaderboardNames[i].text = leaderboard.entries[i].name;
         }
 
         playButton.onClick.AddListener(() =>
         {
             AddToLeaderboard();
-            SceneManager.LoadScene(leaderboardKey);
+            SceneManager.LoadScene("SampleScene");
         });
 
         quitButton.onClick.AddListener(() =>
@@ -69,14 +87,16 @@ public class GameOverController : MonoBehaviour
             score = score
         };
 
-        leaderboard.Add(entry);
-        leaderboard.Sort(Comparer<LeaderboardEntry>.Create(
+        leaderboard.entries.Add(entry);
+        leaderboard.entries.Sort(Comparer<LeaderboardEntry>.Create(
             (LeaderboardEntry lhs, LeaderboardEntry rhs) =>
                 {
-                    return lhs.score - rhs.score;
+                    return rhs.score - lhs.score;
                 }));
 
-        PlayerPrefs.SetString(leaderboardKey, JsonUtility.ToJson(leaderboard));
+        string serialized = JsonUtility.ToJson(leaderboard);
+        PlayerPrefs.SetString(leaderboardKey, serialized);
         PlayerPrefs.Save();
+        Debug.Log($"Saved leaderboard: {serialized} (from {leaderboard})");
     }
 }

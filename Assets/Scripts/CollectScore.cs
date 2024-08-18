@@ -63,7 +63,10 @@ public class CollectScore : MonoBehaviour
 
     public void Dead()
     {
-        PlayerPrefs.SetInt("LastScore", score);
+        PlayerPrefs.SetInt(GameOverController.lastScoreKey, score);
+        PlayerPrefs.Save();
+        Debug.Log($"Saved score {score}");
+
         SceneManager.LoadScene("GameOver");
     }
 }
