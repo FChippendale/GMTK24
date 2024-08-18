@@ -89,7 +89,7 @@ public class PlacementSystem : MonoBehaviour
             if (deathCircle.IsDeathTile(coord))
             {
                 gameObject.SendMessage("Dead");
-                return false;
+                return true;
             }
         }
 
@@ -97,6 +97,53 @@ public class PlacementSystem : MonoBehaviour
         AssignNextFactoryType();
 
         return true;
+    }
+
+    void PlacementDeadlineTimerTick(int attempt = 0)
+    {
+        // Randomly rotate piece
+        int rotations = UnityEngine.Random.Range(0, 6);
+        for (int i = 0; i < rotations; i++) {
+            RotateTileBag(true);
+        }
+
+        // Get all possible placements accounting for zeroing errors
+        HashSet<(int, int)> toTry = new HashSet<(int, int)>();
+        foreach (var (x, y) in gridPlacement.GetPossiblePlacements()) {
+            toTry.Add((x, y));
+            toTry.Add((x + 1, y));
+            toTry.Add((x + 1, y + 1));
+            toTry.Add((x, y + 1));
+            toTry.Add((x - 1, y));
+            toTry.Add((x - 1, y - 1));
+            toTry.Add((x, y - 1));
+        }
+
+        var (center_x, center_y) = gridPlacement.GetCenterTile();
+        List<(int, int)> placements = new List<(int, int)>(toTry);
+        placements.Sort(Comparer<(int, int)>.Create(((int, int) loc1, (int, int) loc2) => {
+            int lhs_x = loc1.Item1 - center_x;
+            int lhs_y = loc1.Item2 - center_y;
+            int rhs_x = loc2.Item1 - center_x;
+            int rhs_y = loc2.Item2 - center_y;
+
+            return (lhs_x * lhs_x + lhs_y * lhs_y).CompareTo(rhs_x * rhs_x  + rhs_y * rhs_y);
+        }));
+
+        foreach (var (x, y) in placements) {
+            if (TryAddTileAtGridPosition(new Vector3Int(x - center_x, y - center_y, 0))) {
+                // Successfully added. Done!
+                return;
+            }
+        }
+
+        if (attempt < 4) {
+            PlacementDeadlineTimerTick(attempt + 1);
+            return;
+        }
+
+        // We're stuck. End the game. The board was probably fill anyway
+        gameObject.SendMessage("Dead");
     }
 
     private void Start()
