@@ -26,7 +26,36 @@ public class TriggerSFX : MonoBehaviour
         timer_tick,
         timer_zero,
     }
-    
+
+
+    public static SoundType GetPlacementSound()
+    {
+        switch (Random.Range(0, 4))
+        {
+            case 0:
+                return SoundType.placement;
+            case 1:
+                return SoundType.placement2;
+            case 3:
+                return SoundType.placement3;
+        }
+        return SoundType.placement;
+    }
+
+    public static SoundType GetInvalidPlacementSound()
+    {
+        switch (Random.Range(0, 4))
+        {
+            case 0:
+                return SoundType.invalid_placement;
+            case 1:
+                return SoundType.invalid_placement2;
+            case 3:
+                return SoundType.invalid_placement3;
+        }
+        return SoundType.invalid_placement;
+    }
+
     public void PlaySound(SoundType sound_name)
     {
         Dictionary<SoundType, AudioSource> soundMapping = new()

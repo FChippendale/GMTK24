@@ -75,7 +75,7 @@ public class PlacementSystem : MonoBehaviour
 
             factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
         }
-        triggerSFX.PlaySound(TriggerSFX.SoundType.placement);
+        triggerSFX.PlaySound(TriggerSFX.GetPlacementSound());
 
         // Has the user scored any points?
         gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
@@ -183,7 +183,7 @@ public class PlacementSystem : MonoBehaviour
             {
                 foreach (CellIndicator indicator in CellIndicators)
                 {
-                    triggerSFX.PlaySound(TriggerSFX.SoundType.invalid_placement);
+                    triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
                     indicator.StartInvalidAnimation();
                 }
             }
@@ -196,7 +196,7 @@ public class PlacementSystem : MonoBehaviour
             {
                 foreach (CellIndicator indicator in CellIndicators)
                 {
-                    triggerSFX.PlaySound(TriggerSFX.SoundType.invalid_placement);
+                    triggerSFX.PlaySound(TriggerSFX.GetInvalidPlacementSound());
                     indicator.StartInvalidAnimation();
                 }
             }
