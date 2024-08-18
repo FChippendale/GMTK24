@@ -15,10 +15,12 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private TileBase tileAsset;
     [SerializeField]
-    private CellIndicator cellIndicator;
+    private List<CellIndicator> CellIndicators;
 
     [SerializeField]
     private GameObject factoryToPlace;
+
+    private bool[,,] tileToPlace;
 
     private GridPlacement gridPlacement;
 
@@ -30,27 +32,47 @@ public class PlacementSystem : MonoBehaviour
 
     private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false)
     {
-        GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(gridPosition), Quaternion.identity);
-
         var (center_x, center_y) = gridPlacement.GetCenterTile();
-        if (!gridPlacement.TryAddToGrid(toPlace, center_x - gridPosition.x, center_y - gridPosition.y, allow_island))
+
+        List<GameObject> gridItems = new List<GameObject>();
+        List<(int, int)> gridCoords = new List<(int, int)>();
+        List<(int, int)> unityCoords = TileBag.ConvertToUnityCoords(tileToPlace, gridPosition.x, gridPosition.y);
+        foreach (var (x, y) in unityCoords)
+        {
+            gridCoords.Add((x + center_x, y + center_y));
+            GameObject toPlace = Instantiate(factoryToPlace, grid.CellToWorld(new Vector3Int(x, y, 0)), Quaternion.identity);
+            gridItems.Add(toPlace);
+        }
+
+        if (!gridPlacement.TryAddToGrid(gridItems, gridCoords, allow_island))
         {
             // Failed to place tile
-            Destroy(toPlace);
+            foreach (GameObject obj in gridItems)
+            {
+                Destroy(obj);
+            }
             return false;
         }
 
-        TileDrawer drawer = toPlace.GetComponent<TileDrawer>();
-        drawer.tilemap = tilemap;
+        // Finalize each factor state
+        for (int i = 0; i < gridItems.Count; i++)
+        {
+            GameObject obj = gridItems[i];
+            var (x, y) = unityCoords[i];
 
-        FactoryBehaviour factoryBehaviourToPlace = toPlace.GetComponent<FactoryBehaviour>();
 
-        // pass factory behaviour on creation to allow redrawing from TileDrawer
-        drawer.traversalType = factoryBehaviourToPlace.traversalType;
-        drawer.color = factoryBehaviourToPlace.GetColor();
-        drawer.position = gridPosition;
+            TileDrawer drawer = obj.GetComponent<TileDrawer>();
+            drawer.tilemap = tilemap;
 
-        factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(gridPosition));
+            FactoryBehaviour factoryBehaviourToPlace = obj.GetComponent<FactoryBehaviour>();
+
+            // pass factory behaviour on creation to allow redrawing from TileDrawer
+            drawer.traversalType = factoryBehaviourToPlace.traversalType;
+            drawer.color = factoryBehaviourToPlace.GetColor();
+            drawer.position = new Vector3Int(x, y, 0);
+
+            factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
+        }
 
         gameObject.SendMessage("FactoryAdded", gridPosition);
         AssignNextFactoryType();
@@ -60,6 +82,9 @@ public class PlacementSystem : MonoBehaviour
 
     private void Start()
     {
+        tileToPlace = new bool[4, 4, 4];
+        tileToPlace[0, 0, 0] = true;
+
         gridPlacement = GetComponent<GridPlacement>();
         TryAddTileAtGridPosition(new Vector3Int(0, 0, 0), true);
     }
@@ -75,14 +100,26 @@ public class PlacementSystem : MonoBehaviour
         FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, traversalTypes.Count)];
         factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = type;
         nextPlacementHint.GetComponent<Image>().color = factoryToPlace.GetComponent<FactoryBehaviour>().GetColor();
+
+        tileToPlace = TileBag.GetRandomShape();
     }
 
     public void PlacementDeadlineTimerTick()
     {
-        List<(int, int)> possiblePlacements = gridPlacement.GetPossiblePlacements();
-        var (x, y) = possiblePlacements[Random.Range(0, possiblePlacements.Count)];
-        var (center_x, center_y) = gridPlacement.GetCenterTile();
-        TryAddTileAtGridPosition(new Vector3Int(center_x - x, center_y - y, 0), true);
+    }
+
+
+    private void DrawPlacementHint(Vector3Int mouseGridPosition, Color color)
+    {
+        List<(int, int)> unityCoords = TileBag.ConvertToUnityCoords(tileToPlace, mouseGridPosition.x, mouseGridPosition.y);
+        for (int i = 0; i < unityCoords.Count; i++)
+        {
+            CellIndicator indicator = CellIndicators[i];
+            var (x, y) = unityCoords[i];
+
+            Vector3 indicatorPosition = grid.CellToWorld(new Vector3Int(x, y, 0));
+            indicator.Reposition(indicatorPosition, color);
+        }
     }
 
     // simple utility to move an object to the on screen position of the currently returned grid position
@@ -97,27 +134,28 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
 
-        // Render an indicator on the active tile.
-        Vector3 indicatorPosition = grid.CellToWorld(gridPosition.position);
-
         if (gridPosition.type == PositionType.valid)
         {
-            cellIndicator.Reposition(indicatorPosition,
-                factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
+            DrawPlacementHint(gridPosition.position, factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
 
             if (Input.GetMouseButtonDown((int)MouseButton.Left) && !TryAddTileAtGridPosition(gridPosition.position, false))
             {
-                cellIndicator.StartInvalidAnimation();
+                foreach (CellIndicator indicator in CellIndicators)
+                {
+                    indicator.StartInvalidAnimation();
+                }
             }
         }
         else
         {
-            cellIndicator.Reposition(indicatorPosition,
-                /* Good Samaritan */ new Color32(0x3c, 0x63, 0x82, 0xff));
+            DrawPlacementHint(gridPosition.position, /* Good Samaritan */ new Color32(0x3c, 0x63, 0x82, 0xff));
 
             if (Input.GetMouseButtonDown((int)MouseButton.Left))
             {
-                cellIndicator.StartInvalidAnimation();
+                foreach (CellIndicator indicator in CellIndicators)
+                {
+                    indicator.StartInvalidAnimation();
+                }
             }
         }
     }
