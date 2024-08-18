@@ -32,9 +32,12 @@ public class TileDrawer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float alpha = 0.8f + Mathf.Sin(
-            animationFrequency * Time.time + animationPhase) / 6.0f;
-        tilemap.SetColor(position, color.WithAlpha(alpha));
+        if (traversalType != FactoryBehaviour.TraversalType.unbreakable_starting_tile)
+        {
+            float alpha = 0.8f + Mathf.Sin(
+                animationFrequency * Time.time + animationPhase) / 6.0f;
+            tilemap.SetColor(position, color.WithAlpha(alpha));
+        }
     }
 
     private void DrawTile()

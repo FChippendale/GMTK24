@@ -299,9 +299,9 @@ public class TileGrid
         return tiles[x, y].occupier;
     }
 
-    public bool HasOccupier(int x, int y)
+    public bool HasBreakableOccupier(int x, int y)
     {
-        return tiles[x, y].state == State.occupied;
+        return tiles[x, y].state == State.occupied && tiles[x, y].type != FactoryBehaviour.TraversalType.unbreakable_starting_tile;
     }
 
     public void RemoveTile(int x, int y)

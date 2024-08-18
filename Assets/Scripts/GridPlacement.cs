@@ -32,7 +32,7 @@ public class GridPlacement : MonoBehaviour
 
         foreach (var (x, y) in tiles_to_destroy)
         {
-            if (grid.HasOccupier(x, y))
+            if (grid.HasBreakableOccupier(x, y))
             {
                 GameObject tile = grid.GetOccupier(x, y);
                 tile.SendMessage("BreakingTile");

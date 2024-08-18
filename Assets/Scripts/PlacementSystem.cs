@@ -78,8 +78,7 @@ public class PlacementSystem : MonoBehaviour
         triggerSFX.PlaySound(TriggerSFX.SoundType.placement);
 
         // Has the user scored any points?
-        bool result = gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
-        Debug.Log(result);
+        gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
 
         gameObject.SendMessage("FactoryAdded", gridPosition);
         AssignNextFactoryType();
@@ -93,6 +92,7 @@ public class PlacementSystem : MonoBehaviour
         tileToPlace[0, 0, 0] = true;
 
         gridPlacement = GetComponent<GridPlacement>();
+        factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = FactoryBehaviour.TraversalType.unbreakable_starting_tile;
         TryAddTileAtGridPosition(new Vector3Int(0, 0, 0), true);
     }
 
