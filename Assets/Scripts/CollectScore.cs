@@ -19,15 +19,16 @@ public class CollectScore : MonoBehaviour
         text.SetText("{}", score);
     }
 
-    public void BreakingTiles(int count)
+    public void BreakingTiles((int, int) info)
     {
-        score += count * count;
+        var (count, encirclement_count) = info;
+        score += 1000 * (count + encirclement_count * encirclement_count);
         UpdateScore();
     }
 
     public void TilesAdded(int count)
     {
-        score += count;
+        score += 100 * count;
         UpdateScore();
     }
 }

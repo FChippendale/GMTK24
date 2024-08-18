@@ -28,8 +28,9 @@ public class GridScaler : MonoBehaviour
         target.transform.localScale = initialScale * currentMultiplier;
     }
 
-    public void BreakingTiles(int count)
+    public void BreakingTiles((int, int) info)
     {
+        var (count, _) = info;
         factoryCount -= count;
     }
 

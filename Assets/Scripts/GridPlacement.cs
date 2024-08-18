@@ -31,6 +31,8 @@ public class GridPlacement : MonoBehaviour
 
         bool encircles_tiles = false;
         HashSet<(int, int)> tiles_to_destroy = new HashSet<(int, int)>(encircled_tiles);
+        int encircled_tile_count = tiles_to_destroy.Count;
+
         foreach (var (x, y) in tiles_to_destroy)
         {
             if (grid.HasOccupier(x, y))
@@ -61,7 +63,7 @@ public class GridPlacement : MonoBehaviour
             }
         }
 
-        gameObject.SendMessage("BreakingTiles", tiles_to_break);
+        gameObject.SendMessage("BreakingTiles", (tiles_to_break, encircled_tile_count));
         return true;
     }
 
