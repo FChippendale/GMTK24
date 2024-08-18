@@ -1527,6 +1527,7 @@ GameObject:
   - component: {fileID: 732832403}
   - component: {fileID: 732832404}
   - component: {fileID: 732832405}
+  - component: {fileID: 732832406}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -1708,6 +1709,20 @@ MonoBehaviour:
   tilemap: {fileID: 1605598512}
   grid: {fileID: 1254472424}
   tileAsset: {fileID: 11400000, guid: 64dd9121a8170dff29e4c1c45deb0d85, type: 2}
+--- !u!114 &732832406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732832393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 707fb4e803eada6bdbe6fca95ae13a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1047086472}
+  duration: 2
 --- !u!1 &748806493
 GameObject:
   m_ObjectHideFlags: 0
