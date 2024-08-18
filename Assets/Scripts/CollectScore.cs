@@ -1,36 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 
 public class CollectScore : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject gridPlacementObj;
-    [SerializeField]
-    private GameObject measuringScaleObj;
+    public TextMeshProUGUI text;
 
     [SerializeField]
-    private GridPlacement gridPlacement;
+    private int score = 0;
 
-    float timeTillScoreCalculation = 0.0f;
-    public float TimeBetweenScoreCalculations = 3.0f;
-    public float TimeOfScoreCalculation = 2.0f;
-
-
-    float timeTillTax = 0.0f;
-    [SerializeField]
-    int numberOfTaxes = 0;
-    public float TimeBetweenTax = 2.0f;
-
-
-    bool isCalculatingScore = false;
-
-    void Start()
+    private void Start()
     {
-        numberOfTaxes = 0;
+        UpdateScore();
     }
 
-    void Update()
+    private void UpdateScore()
     {
+        text.SetText("{}", score);
+    }
+
+    public void BreakingTiles(int count)
+    {
+        score += count * count;
+        UpdateScore();
+    }
+
+    public void TilesAdded(int count)
+    {
+        score += count;
+        UpdateScore();
     }
 }
