@@ -33,7 +33,7 @@ public class TileGrid
     public TileGrid()
     {
         mapping = new Dictionary<GameObject, (int, int)>();
-        tiles = new Tile[300, 300];
+        tiles = new Tile[40, 40];
         allTiles = new HashSet<(int, int)>();
 
         for (int x = 0; x < tiles.GetLength(0); x++)
@@ -240,7 +240,7 @@ public class TileGrid
             {
                 if (tiles[x, y].state == State.occupied && tiles[x, y].type == type)
                 {
-                    // We're exploring a "blue" node, only explore non-blue children
+                    // We're exploring a "blue" node, only explore blue children
                     if (tiles[loc.Item1, loc.Item2].state != State.occupied || tiles[loc.Item1, loc.Item2].type != type)
                     {
                         continue;
@@ -289,9 +289,12 @@ public class TileGrid
             List<(int, int)> neighbours = getNeighborLocs(x, y);
             foreach ((int, int) loc in neighbours)
             {
-                if (!result.Contains(loc))
+                if (HasOccupier(loc.Item1, loc.Item2))
                 {
-                    result.Add(loc);
+                    if (!result.Contains(loc))
+                    {
+                        result.Add(loc);
+                    }
                 }
             }
         }
