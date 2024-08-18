@@ -8,11 +8,23 @@ public class MenuController : MonoBehaviour
     public Button helpButton;
     public Button quitButton;
 
-    // Start is called before the first frame update
     void Start()
     {
-        playButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
-        // TODO helpButton
-        quitButton.onClick.AddListener(() => Application.Quit());
+        // With the null checks, we can reuse this code in both the main menu
+        // and the help screen.
+        if (playButton != null)
+        {
+            playButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
+        }
+
+        if (helpButton != null)
+        {
+            helpButton.onClick.AddListener(() => SceneManager.LoadScene("Help"));
+        }
+
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(() => Application.Quit());
+        }
     }
 }
