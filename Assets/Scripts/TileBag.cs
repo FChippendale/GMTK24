@@ -19,9 +19,9 @@ public class TileBag
                 (z < tile.GetLength(2) - 1 && tile[x, y, z + 1]);
     }
 
-    static void growByOne(List<(int, int, int)> squares, bool[,,] tile)
+    static void GrowByOne(bool[,,] tile)
     {
-        List<(int, int, int)> possiblePlacements = new List<(int, int, int)>();
+        List<(int, int, int)> possiblePlacements = new();
 
         for (int x = 0; x < tile.GetLength(0); x++)
         {
@@ -39,7 +39,51 @@ public class TileBag
 
         var (p_x, p_y, p_z) = possiblePlacements[UnityEngine.Random.Range(0, possiblePlacements.Count)];
         tile[p_x, p_y, p_z] = true;
-        squares.Add((p_x, p_y, p_z));
+    }
+
+    static public List<Vector3Int> ToCoordinates(bool[,,] tileBag)
+    {
+        List<Vector3Int> list = new();
+
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                for (int k = 0; k < 4; ++k)
+                {
+                    if (tileBag[i, j, k])
+                    {
+                        list.Add(new(i, j, k));
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    static public bool[,,] Normalize(bool[,,] tileBag)
+    {
+        List<Vector3Int> coords = ToCoordinates(tileBag);
+
+        int lowest_x = int.MaxValue;
+        int lowest_y = int.MaxValue;
+        int lowest_z = int.MaxValue;
+
+        foreach (Vector3Int vec in coords)
+        {
+            lowest_x = Math.Min(vec.x, lowest_x);
+            lowest_y = Math.Min(vec.y, lowest_y);
+            lowest_z = Math.Min(vec.z, lowest_z);
+        }
+
+        bool[,,] normalizedTile = new bool[4, 4, 4];
+        foreach (Vector3Int vec in coords)
+        {
+            normalizedTile[vec.x - lowest_x, vec.y - lowest_y, vec.z - lowest_z] = true;
+        }
+
+        return normalizedTile;
     }
 
     static public bool[,,] GetRandomShape()
@@ -75,33 +119,14 @@ public class TileBag
         // Down left    (0, 0, -1)  ->  (-1, 0, 0)      k -> i
         // Up left      (-1, 0, 0)  ->  (0, 1, 0)       i -> -j
 
-        List<(int, int, int)> squares = new List<(int, int, int)>();
         bool[,,] tile = new bool[4, 4, 4];
         tile[2, 2, 2] = true;
-        squares.Add((2, 2, 2));
-        growByOne(squares, tile);
-        growByOne(squares, tile);
-        growByOne(squares, tile);
-
-
-        int lowest_x = squares[0].Item1;
-        int lowest_y = squares[0].Item2;
-        int lowest_z = squares[0].Item3;
-
-        foreach (var (x, y, z) in squares)
+        for (int i = 0; i < 3; ++i)
         {
-            lowest_x = Math.Min(x, lowest_x);
-            lowest_y = Math.Min(y, lowest_y);
-            lowest_z = Math.Min(z, lowest_z);
+            GrowByOne(tile);
         }
 
-        bool[,,] normalized_tile = new bool[4, 4, 4];
-        foreach (var (x, y, z) in squares)
-        {
-            normalized_tile[x - lowest_x, y - lowest_y, z - lowest_z] = true;
-        }
-
-        return normalized_tile;
+        return Normalize(tile);
     }
 
     static public List<(int, int)> ConvertToUnityCoords(bool[,,] tile, int origin_x, int origin_y)
