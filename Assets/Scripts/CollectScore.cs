@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollectScore : MonoBehaviour
 {
@@ -58,5 +59,11 @@ public class CollectScore : MonoBehaviour
         UpdateScore();
         currentSize = smallScorePulseSize;
         pulseRate = 1;
+    }
+
+    public void Dead()
+    {
+        PlayerPrefs.SetInt("LastScore", score);
+        SceneManager.LoadScene("GameOver");
     }
 }

@@ -14,6 +14,5 @@ public class MenuController : MonoBehaviour
         playButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
         // TODO helpButton
         quitButton.onClick.AddListener(() => Application.Quit());
-
     }
 }
