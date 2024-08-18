@@ -4,7 +4,7 @@ public class ResetTimer : MonoBehaviour
 {
     public Timer timer;
 
-    public void FactoryAdded()
+    public void TilesAdded()
     {
         timer.Reset();
     }

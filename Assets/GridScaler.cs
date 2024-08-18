@@ -21,7 +21,6 @@ public class GridScaler : MonoBehaviour
         initialScale = target.transform.localScale;
     }
 
-
     void Update()
     {
         currentMultiplier = Mathf.MoveTowards(currentMultiplier,
@@ -34,9 +33,9 @@ public class GridScaler : MonoBehaviour
         factoryCount -= count;
     }
 
-    public void FactoryAdded()
+    public void TilesAdded(int count)
     {
-        factoryCount += 4;
+        factoryCount += count;
 
         if (factoryCount >= threshold)
         {

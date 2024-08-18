@@ -36,8 +36,8 @@ public class PlacementSystem : MonoBehaviour
     {
         var (center_x, center_y) = gridPlacement.GetCenterTile();
 
-        List<GameObject> gridItems = new List<GameObject>();
-        List<(int, int)> gridCoords = new List<(int, int)>();
+        List<GameObject> gridItems = new();
+        List<(int, int)> gridCoords = new();
         List<(int, int)> unityCoords = TileBag.ConvertToUnityCoords(tileToPlace, gridPosition.x, gridPosition.y);
         foreach (var (x, y) in unityCoords)
         {
@@ -80,7 +80,7 @@ public class PlacementSystem : MonoBehaviour
         // Has the user scored any points?
         gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
 
-        gameObject.SendMessage("FactoryAdded", gridPosition);
+        gameObject.SendMessage("TilesAdded", gridItems.Count);
         AssignNextFactoryType();
 
         return true;
