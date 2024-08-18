@@ -29,7 +29,7 @@ public class GridScaler : MonoBehaviour
 
     public void FactoryAdded()
     {
-        factoryCount += 1;
+        factoryCount += 4;
 
         if (factoryCount >= threshold)
         {

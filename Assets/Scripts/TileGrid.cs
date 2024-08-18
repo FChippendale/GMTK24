@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,22 +20,26 @@ public class TileGrid
     {
         public State state = State.empty;
         public GameObject occupier = null;
+        public FactoryBehaviour.TraversalType type = FactoryBehaviour.TraversalType.constant_integer_amount;
     }
 
     Dictionary<GameObject, (int, int)> mapping;
     Tile[,] tiles;
+    HashSet<(int, int)> allTiles;
 
 
     public TileGrid()
     {
         mapping = new Dictionary<GameObject, (int, int)>();
         tiles = new Tile[300, 300];
+        allTiles = new HashSet<(int, int)>();
 
         for (int x = 0; x < tiles.GetLength(0); x++)
         {
             for (int y = 0; y < tiles.GetLength(1); y++)
             {
                 tiles[x, y] = new Tile();
+                allTiles.Add((x, y));
 
                 if (x == 0 || x == tiles.GetLength(0) - 1)
                 {
@@ -60,7 +65,7 @@ public class TileGrid
         return false;
     }
 
-    List<Tile> getNeighbors(int x, int y)
+    List<(int, int)> getNeighborLocs(int x, int y)
     {
         List<(int, int)> offsets;
         if (y % 2 == 0)
@@ -86,13 +91,23 @@ public class TileGrid
             };
         }
 
-        List<Tile> neighbours = new List<Tile>();
+        List<(int, int)> neighbours = new List<(int, int)>();
         foreach (var (dir_x, dir_y) in offsets)
         {
             if (x + dir_x >= 0 && x + dir_x < tiles.GetLength(0) && y + dir_y >= 0 && y + dir_y < tiles.GetLength(1))
             {
-                neighbours.Add(tiles[x + dir_x, y + dir_y]);
+                neighbours.Add((x + dir_x, y + dir_y));
             }
+        }
+        return neighbours;
+    }
+
+    List<Tile> getNeighbors(int x, int y)
+    {
+        List<Tile> neighbours = new List<Tile>();
+        foreach (var (n_x, n_y) in getNeighborLocs(x, y))
+        {
+            neighbours.Add(tiles[n_x, n_y]);
         }
         return neighbours;
     }
@@ -103,6 +118,19 @@ public class TileGrid
         foreach (Tile neighbour in getNeighbors(x, y))
         {
             if (neighbour.state == state)
+            {
+                neighbours.Add(neighbour);
+            }
+        }
+        return neighbours;
+    }
+
+    List<Tile> getNeighborsNotOfType(FactoryBehaviour.TraversalType type, int x, int y)
+    {
+        List<Tile> neighbours = new List<Tile>();
+        foreach (Tile neighbour in getNeighbors(x, y))
+        {
+            if (neighbour.type == type)
             {
                 neighbours.Add(neighbour);
             }
@@ -125,26 +153,39 @@ public class TileGrid
         return mapping[gameObject];
     }
 
-    public bool TryAddTile(GameObject to_add, int x, int y, bool allow_island)
+    public bool TryAddTile(List<GameObject> to_add, List<(int, int)> positions, bool allow_island)
     {
-        if (tiles[x, y].state != State.empty)
+        bool has_neighbour = false;
+        foreach (var (x, y) in positions)
+        {
+            if (tiles[x, y].state != State.empty)
+            {
+                return false;
+            }
+
+            if (hasNeighbourOfState(State.occupied, x, y))
+            {
+                has_neighbour = true;
+            }
+        }
+
+        if (!allow_island && !has_neighbour)
         {
             return false;
         }
 
-        // Has neighbour?
-        if (!allow_island && !hasNeighbourOfState(State.occupied, x, y))
+        int index = 0;
+        foreach (var (x, y) in positions)
         {
-            return false;
+            tiles[x, y] = new Tile
+            {
+                state = State.occupied,
+                occupier = to_add[index],
+                type = to_add[index].GetComponent<FactoryBehaviour>().traversalType,
+            };
+            mapping.Add(to_add[index], (x, y));
+            index += 1;
         }
-
-
-        tiles[x, y] = new Tile
-        {
-            state = State.occupied,
-            occupier = to_add
-        };
-        mapping.Add(to_add, (x, y));
 
         return true;
     }
@@ -168,6 +209,46 @@ public class TileGrid
             }
         }
         return result;
+    }
+
+    public List<(int, int)> GetTilesEncircledBy(FactoryBehaviour.TraversalType type)
+    {
+        HashSet<(int, int)> CellsExplored = new HashSet<(int, int)>();
+        Queue<(int, int)> CellsToExplore = new Queue<(int, int)>();
+
+        // Assume boundaries are never encircled
+        for (int x = 0; x < tiles.GetLength(0); x++)
+        {
+            CellsToExplore.Enqueue((x, 0));
+            CellsToExplore.Enqueue((x, tiles.GetLength(1) - 1));
+        }
+        for (int y = 0; y < tiles.GetLength(1); y++)
+        {
+            CellsToExplore.Enqueue((0, y));
+            CellsToExplore.Enqueue((tiles.GetLength(0) - 1, y));
+        }
+
+        CellsExplored.AddRange(CellsToExplore);
+
+        while (CellsToExplore.Count > 0)
+        {
+            var (x, y) = CellsToExplore.Dequeue();
+            if (tiles[x, y].state == State.occupied && tiles[x, y].type == type)
+            {
+                continue;
+            }
+
+            foreach ((int, int) loc in getNeighborLocs(x, y))
+            {
+                if (!CellsExplored.Contains(loc))
+                {
+                    CellsToExplore.Enqueue(loc);
+                    CellsExplored.Add(loc);
+                }
+            }
+        }
+
+        return allTiles.Except(CellsExplored).ToList();
     }
 
     public (int, int) GetCenterTile()

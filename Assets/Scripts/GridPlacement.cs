@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -60,11 +61,16 @@ public class GridPlacement : MonoBehaviour
         return grid.GetPossiblePlacements();
     }
 
-    public bool TryAddToGrid(GameObject to_add, int x, int y, bool allow_island)
+    public bool TryAddToGrid(List<GameObject> to_add, List<(int, int)> positions, bool allow_island)
     {
-        if (grid.TryAddTile(to_add, x, y, allow_island))
+        if (grid.TryAddTile(to_add, positions, allow_island))
         {
-            orderAdded.Add(to_add);
+            foreach (GameObject obj in to_add)
+            {
+                orderAdded.Add(obj);
+            }
+            List<(int, int)> topology = grid.GetTilesEncircledBy(to_add[0].GetComponent<FactoryBehaviour>().traversalType);
+            Debug.Log(topology.Count);
             return true;
         }
         return false;
@@ -73,5 +79,10 @@ public class GridPlacement : MonoBehaviour
     public (int, int) GetCenterTile()
     {
         return grid.GetCenterTile();
+    }
+
+    public void Update()
+    {
+        // Get enclosed space
     }
 }
