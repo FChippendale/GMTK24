@@ -883,11 +883,11 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -1575,6 +1575,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 314628364}
   score: 0
+  pulseRate: 1
+  bigScorePulseSize: 2
+  smallScorePulseSize: 1.2
+  targetSize: 1
+  currentSize: 1
 --- !u!114 &732832403
 MonoBehaviour:
   m_ObjectHideFlags: 0
