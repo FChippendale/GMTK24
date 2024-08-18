@@ -313,6 +313,11 @@ public class TileGrid
         return tiles[x, y].state == State.occupied;
     }
 
+    public bool IsEmpty(int x, int y)
+    {
+        return tiles[x, y].state == State.empty;
+    }
+
     public void RemoveTile(int x, int y)
     {
         if (tiles[x, y].state == State.empty)

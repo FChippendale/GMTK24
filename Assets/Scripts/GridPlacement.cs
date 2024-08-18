@@ -9,7 +9,7 @@ public class GridPlacement : MonoBehaviour
     [SerializeField]
     private TriggerSFX triggerSFX;
 
-    private readonly TileGrid grid = new();
+    public readonly TileGrid grid = new();
 
     public List<(int, int)> GetPossiblePlacements()
     {

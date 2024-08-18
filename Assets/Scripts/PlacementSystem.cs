@@ -22,7 +22,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject factoryToPlace;
 
-    private bool[,,] tileToPlace;
+    private bool[,,] tileToPlace = new bool[4, 4, 4];
 
     private GridPlacement gridPlacement;
 
@@ -126,6 +126,7 @@ public class PlacementSystem : MonoBehaviour
 
     private void DrawPlacementHint(Vector3Int mouseGridPosition, Color color)
     {
+        var (center_x, center_y) = gridPlacement.GetCenterTile();
         List<(int, int)> unityCoords = TileBag.ConvertToUnityCoords(tileToPlace, mouseGridPosition.x, mouseGridPosition.y);
         for (int i = 0; i < unityCoords.Count; i++)
         {
@@ -133,7 +134,10 @@ public class PlacementSystem : MonoBehaviour
             var (x, y) = unityCoords[i];
 
             Vector3 indicatorPosition = grid.CellToWorld(new Vector3Int(x, y, 0));
-            indicator.Reposition(indicatorPosition, color);
+            bool isEmpty = gridPlacement.grid.IsEmpty(x + center_x,
+                                                      y + center_y);
+            indicator.Reposition(indicatorPosition,
+                isEmpty ? color : CellIndicator.invalidColour);
         }
     }
 
@@ -189,8 +193,6 @@ public class PlacementSystem : MonoBehaviour
             // Cursor is not in the grid, there's nothing to do.
             return;
         }
-
-
 
         DrawPlacementHint(gridPosition.position, factoryToPlace.GetComponent<FactoryBehaviour>().GetColor());
 
