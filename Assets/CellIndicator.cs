@@ -15,7 +15,7 @@ public class CellIndicator : MonoBehaviour
 
     public static readonly Color invalidColour = new Color32(229, 80, 57, 255); // Mandarin red
     private Color freeColour = Color.black;
-    private Vector3 position = Vector3.zero;
+    private Vector3 position = new Vector3(200, 200, 0);
     private State state = State.free;
     private float timeInState = 0.0f;
     private SpriteRenderer spriteRenderer;
