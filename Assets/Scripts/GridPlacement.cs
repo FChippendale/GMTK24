@@ -6,6 +6,9 @@ using UnityEngine.Tilemaps;
 
 public class GridPlacement : MonoBehaviour
 {
+    [SerializeField]
+    private TriggerSFX triggerSFX;
+
     private readonly TileGrid grid = new();
 
     public List<(int, int)> GetPossiblePlacements()
@@ -46,6 +49,7 @@ public class GridPlacement : MonoBehaviour
         tiles_to_destroy = grid.ExpandByRing(tiles_to_destroy);
 
         int tiles_to_break = 0;
+        triggerSFX.PlaySound(TriggerSFX.SoundType.break_block);
         foreach (var (x, y) in tiles_to_destroy)
         {
             if (grid.HasBreakableOccupier(x, y))

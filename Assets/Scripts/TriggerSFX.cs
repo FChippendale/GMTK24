@@ -13,6 +13,8 @@ public class TriggerSFX : MonoBehaviour
     public AudioSource placement3;
     public AudioSource timerTick;
     public AudioSource timerHitZero;
+    public AudioSource scoreIncrease;
+    public AudioSource scoreIncrease2;
 
     public enum SoundType
     {
@@ -25,6 +27,8 @@ public class TriggerSFX : MonoBehaviour
         placement3,
         timer_tick,
         timer_zero,
+        score_increase,
+        score_increase2,
     }
 
 
@@ -69,6 +73,8 @@ public class TriggerSFX : MonoBehaviour
             {SoundType.placement3, placement3},
             {SoundType.timer_tick, timerTick},
             {SoundType.timer_zero, timerHitZero},
+            {SoundType.score_increase, scoreIncrease},
+            {SoundType.score_increase2, scoreIncrease2},
         };
         soundMapping[sound_name].Play();
     }
