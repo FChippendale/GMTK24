@@ -76,6 +76,11 @@ public class PlacementSystem : MonoBehaviour
             factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
         }
         triggerSFX.PlaySound(TriggerSFX.SoundType.placement);
+
+        // Has the user scored any points?
+        bool result = gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
+        Debug.Log(result);
+
         gameObject.SendMessage("FactoryAdded", gridPosition);
         AssignNextFactoryType();
 

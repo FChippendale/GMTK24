@@ -49,4 +49,10 @@ public class TileDrawer : MonoBehaviour
         tilemap.SetTileFlags(position, TileFlags.None);
         tilemap.SetColor(position, color);
     }
+
+    public void BreakingTile()
+    {
+        tilemap.SetTile(position, null);
+        Destroy(gameObject);
+    }
 }

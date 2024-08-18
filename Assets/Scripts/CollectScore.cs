@@ -32,26 +32,5 @@ public class CollectScore : MonoBehaviour
 
     void Update()
     {
-        timeTillScoreCalculation -= Time.deltaTime;
-        if (timeTillScoreCalculation < 0.0f)
-        {
-            isCalculatingScore = true;
-            timeTillScoreCalculation = TimeBetweenScoreCalculations;
-            gridPlacement.StartScoreCalculation(TimeOfScoreCalculation);
-        }
-
-        if (isCalculatingScore)
-        {
-            isCalculatingScore = !gridPlacement.DoScoreCalculationUpdateStep();
-        }
-
-
-        timeTillTax -= Time.deltaTime;
-        if (timeTillTax < 0.0f)
-        {
-            measuringScaleObj.SendMessage("AddTax", numberOfTaxes * 2);
-            numberOfTaxes += 1;
-            timeTillTax = TimeBetweenTax;
-        }
     }
 }

@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
 
@@ -211,7 +213,7 @@ public class TileGrid
         return result;
     }
 
-    public List<(int, int)> GetTilesEncircledBy(FactoryBehaviour.TraversalType type)
+    public HashSet<(int, int)> GetTilesEncircledBy(FactoryBehaviour.TraversalType type)
     {
         HashSet<(int, int)> CellsExplored = new HashSet<(int, int)>();
         Queue<(int, int)> CellsToExplore = new Queue<(int, int)>();
@@ -248,7 +250,72 @@ public class TileGrid
             }
         }
 
-        return allTiles.Except(CellsExplored).ToList();
+        return Enumerable.ToHashSet(allTiles.Except(CellsExplored));
+    }
+
+    public HashSet<(int, int)> ExpandRingIntoTouching(HashSet<(int, int)> tile_set, FactoryBehaviour.TraversalType type)
+    {
+        HashSet<(int, int)> cellsExplored = new HashSet<(int, int)>(tile_set);
+        Queue<(int, int)> cellsToExplore = new Queue<(int, int)>(tile_set);
+
+        while (cellsToExplore.Count > 0)
+        {
+            var (x, y) = cellsToExplore.Dequeue();
+            List<(int, int)> neighbours = getNeighborLocs(x, y);
+            foreach (var (n_x, n_y) in neighbours)
+            {
+                if (tiles[n_x, n_y].state == State.occupied && tiles[n_x, n_y].type == type)
+                {
+                    if (!cellsExplored.Contains((n_x, n_y)))
+                    {
+                        cellsToExplore.Enqueue((n_x, n_y));
+                        cellsExplored.Add((n_x, n_y));
+                    }
+                }
+            }
+        }
+        return cellsExplored;
+    }
+
+    public HashSet<(int, int)> ExpandByRing(HashSet<(int, int)> tile_set)
+    {
+        HashSet<(int, int)> result = new HashSet<(int, int)>(tile_set);
+        foreach (var (x, y) in tile_set)
+        {
+            List<(int, int)> neighbours = getNeighborLocs(x, y);
+            foreach ((int, int) loc in neighbours)
+            {
+                if (!result.Contains(loc))
+                {
+                    result.Add(loc);
+                }
+            }
+        }
+        return result;
+    }
+
+    public GameObject GetOccupier(int x, int y)
+    {
+        return tiles[x, y].occupier;
+    }
+
+    public bool HasOccupier(int x, int y)
+    {
+        return tiles[x, y].state == State.occupied;
+    }
+
+    public void RemoveTile(int x, int y)
+    {
+        if (tiles[x, y].state == State.empty)
+        {
+            return;
+        }
+
+        GameObject occupier = tiles[x, y].occupier;
+        tiles[x, y].state = State.empty;
+        tiles[x, y].occupier = null;
+
+        mapping.Remove(occupier);
     }
 
     public (int, int) GetCenterTile()
