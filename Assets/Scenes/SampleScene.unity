@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 314628363}
   - component: {fileID: 314628365}
   - component: {fileID: 314628364}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -775,7 +775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &499499567
 RectTransform:
   m_ObjectHideFlags: 0
@@ -914,7 +914,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.9921569, g: 0.9568628, b: 0.9058824, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1626,7 +1626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 748806494}
   - component: {fileID: 748806495}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Padding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2187,7 +2187,7 @@ GameObject:
   - component: {fileID: 1189713435}
   - component: {fileID: 1189713434}
   - component: {fileID: 1189713437}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NextTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3154,7 +3154,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -3243,7 +3243,7 @@ GameObject:
   - component: {fileID: 1729906973}
   - component: {fileID: 1729906972}
   - component: {fileID: 1729906974}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SidePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3348,7 +3348,7 @@ GameObject:
   - component: {fileID: 1734521254}
   - component: {fileID: 1734521256}
   - component: {fileID: 1734521255}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
