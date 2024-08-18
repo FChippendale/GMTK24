@@ -224,7 +224,7 @@ public class TileGrid
             CellsToExplore.Enqueue((x, 0));
             CellsToExplore.Enqueue((x, tiles.GetLength(1) - 1));
         }
-        for (int y = 0; y < tiles.GetLength(1); y++)
+        for (int y = 1; y < tiles.GetLength(1) - 1; y++)
         {
             CellsToExplore.Enqueue((0, y));
             CellsToExplore.Enqueue((tiles.GetLength(0) - 1, y));
