@@ -113,7 +113,7 @@ public class PlacementSystem : MonoBehaviour
     void AttemptAutomaticPlacement(int attempt = 0)
     {
         // Randomly rotate piece
-        int rotations = UnityEngine.Random.Range(0, 6);
+        int rotations = Random.Range(0, 6);
         for (int i = 0; i < rotations; i++)
         {
             RotateTileBag(true);
@@ -159,7 +159,7 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
 
-        // We're stuck. End the game. The board was probably fill anyway
+        // We're stuck. End the game. The board was probably full anyway
         gameObject.SendMessage("Dead");
     }
 
@@ -180,10 +180,12 @@ public class PlacementSystem : MonoBehaviour
 
     void AssignNextFactoryType()
     {
-        List<FactoryBehaviour.TraversalType> traversalTypes = new List<FactoryBehaviour.TraversalType>{
+        List<FactoryBehaviour.TraversalType> traversalTypes = new()
+        {
             FactoryBehaviour.TraversalType.constant_integer_amount,
             FactoryBehaviour.TraversalType.largest_adjacent,
             FactoryBehaviour.TraversalType.sum_of_any_adjacent,
+            FactoryBehaviour.TraversalType.spray,
         };
 
         FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, traversalTypes.Count)];
