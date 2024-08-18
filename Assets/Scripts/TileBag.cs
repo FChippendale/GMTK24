@@ -60,13 +60,20 @@ public class TileBag
         // Down left    (0, -1)
         // Up left      (1, -1)
 
-        // On a cube
-        // Up           (0, 1, 0)
-        // Up right     (0, 0, 1)
-        // Down right   (1, 0, 0)
-        // Down         (0, -1, 0)
-        // Down left    (0, 0, -1)
-        // Up left      (-1, 0, 0)
+        // Directions and rotations in cube coordinates.
+        //
+        // | 0 -1  0 |
+        // | 0  0  1 |
+        // | 1  0  0 |
+        //
+        // Direction    Vector          Next rotation   Transform
+        // ------------------------------------------------------
+        // Up           (0, 1, 0)   ->  (0, 0, 1)       j -> k
+        // Up right     (0, 0, 1)   ->  (1, 0, 0)       k -> i
+        // Down right   (1, 0, 0)   ->  (0, -1, 0)      i -> -j
+        // Down         (0, -1, 0)  ->  (0, 0, -1)      j -> k
+        // Down left    (0, 0, -1)  ->  (-1, 0, 0)      k -> i
+        // Up left      (-1, 0, 0)  ->  (0, 1, 0)       i -> -j
 
         List<(int, int, int)> squares = new List<(int, int, int)>();
         bool[,,] tile = new bool[4, 4, 4];

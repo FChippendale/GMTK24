@@ -132,6 +132,49 @@ public class PlacementSystem : MonoBehaviour
     // simple utility to move an object to the on screen position of the currently returned grid position
     private void Update()
     {
+        // TODO use GetButtonDown instead to allow key remapping.
+        // Clockwise rotation.
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            bool[,,] tmp = new bool[4, 4, 4];
+
+            // TODO can we do this without nested loops?
+            for (int i = 0; i < 4; ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    for (int k = 0; k < 4; ++k)
+                    {
+                        // Derivation in TileBag.
+                        tmp[k, 3 - i, j] = tileToPlace[i, j, k];
+                    }
+                }
+            }
+
+            tileToPlace = tmp;
+        }
+
+        // Anti-clockwise rotation.
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            bool[,,] tmp = new bool[4, 4, 4];
+
+            // TODO can we do this without nested loops?
+            for (int i = 0; i < 4; ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    for (int k = 0; k < 4; ++k)
+                    {
+                        // Derivation in TileBag.
+                        tmp[3 - j, k, i] = tileToPlace[i, j, k];
+                    }
+                }
+            }
+
+            tileToPlace = tmp;
+        }
+
         // get mouse grid position and convert back to screen pos
         GridPosition gridPosition = inputManager.GetSelectedGridPosition();
 
