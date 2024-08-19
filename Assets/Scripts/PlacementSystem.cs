@@ -37,6 +37,8 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject AutomaticPlaceParticles;
 
+    private int number_of_colors;
+
     private bool TryAddTileAtGridPosition(Vector3Int gridPosition, bool allow_island = false, bool is_automatic_placement = false)
     {
         var (center_x, center_y) = gridPlacement.GetCenterTile();
@@ -173,6 +175,8 @@ public class PlacementSystem : MonoBehaviour
 
     private void Start()
     {
+        number_of_colors = PlayerPrefs.GetInt("number_of_colors", 4);
+
         tileToPlace = new bool[4, 4, 4];
         tileToPlace[0, 0, 0] = true;
 
@@ -191,7 +195,7 @@ public class PlacementSystem : MonoBehaviour
             FactoryBehaviour.TraversalType.spray,
         };
 
-        FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, traversalTypes.Count)];
+        FactoryBehaviour.TraversalType type = traversalTypes[Random.Range(0, number_of_colors)];
         factoryToPlace.GetComponent<FactoryBehaviour>().traversalType = type;
         nextPlacementHint.GetComponent<Image>().color = factoryToPlace.GetComponent<FactoryBehaviour>().GetColor();
 

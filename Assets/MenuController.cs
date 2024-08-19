@@ -8,6 +8,9 @@ public class MenuController : MonoBehaviour
     public Button leaderboardButton;
     public Button quitButton;
 
+    public Button easyButton;
+    public Button hardButton;
+
     void Start()
     {
         // With the null checks, we can reuse this code in both the main menu
@@ -25,6 +28,17 @@ public class MenuController : MonoBehaviour
         if (quitButton != null)
         {
             quitButton.onClick.AddListener(() => Application.Quit());
+        }
+
+        if (easyButton != null)
+        {
+            PlayerPrefs.SetInt("number_of_colors", 3);
+            easyButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
+        }
+        if (hardButton != null)
+        {
+            PlayerPrefs.SetInt("number_of_colors", 4);
+            hardButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
         }
     }
 }
