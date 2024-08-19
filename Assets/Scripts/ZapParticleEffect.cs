@@ -24,7 +24,6 @@ public class ZapParticleEffect : MonoBehaviour
     {
         timeToHidden = ZapDuration;
         StartCoroutine(zapper(position));
-
     }
 
     public void Start()

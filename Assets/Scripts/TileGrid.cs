@@ -316,6 +316,11 @@ public class TileGrid
         return tiles[x, y].state == State.occupied;
     }
 
+    public bool IsInGrid(int x, int y)
+    {
+        return x >= 0 && x < tiles.GetLength(0) && y >= 0 && y < tiles.GetLength(1);
+    }
+
     public bool IsEmpty(int x, int y)
     {
         return tiles[x, y].state == State.empty;

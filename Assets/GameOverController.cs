@@ -46,6 +46,8 @@ public class GameOverController : MonoBehaviour
             string serialized = PlayerPrefs.GetString(leaderboardKey);
             Debug.Log($"Loading leaderboard: {serialized}");
             leaderboard = JsonUtility.FromJson<Leaderboard>(serialized);
+        } else {
+            leaderboard.entries = new List<LeaderboardEntry>();
         }
 
         foreach (var n in leaderboardNames)

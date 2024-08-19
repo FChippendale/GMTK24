@@ -92,7 +92,10 @@ public class PlacementSystem : MonoBehaviour
         }
 
         // Has the user scored any points?
-        gridPlacement.CheckForEncirclements(factoryToPlace.GetComponent<FactoryBehaviour>().traversalType);
+        gridPlacement.CheckForEncirclements(FactoryBehaviour.TraversalType.constant_integer_amount);
+        gridPlacement.CheckForEncirclements(FactoryBehaviour.TraversalType.largest_adjacent);
+        gridPlacement.CheckForEncirclements(FactoryBehaviour.TraversalType.spray);
+        gridPlacement.CheckForEncirclements(FactoryBehaviour.TraversalType.sum_of_any_adjacent);
 
         // Has the user died?
         foreach ((int, int) coord in unityCoords)
@@ -205,10 +208,10 @@ public class PlacementSystem : MonoBehaviour
             var (x, y) = unityCoords[i];
 
             Vector3 indicatorPosition = grid.CellToWorld(new Vector3Int(x, y, 0));
-            bool isEmpty = gridPlacement.grid.IsEmpty(x + center_x,
-                                                      y + center_y);
+            bool isValid = gridPlacement.grid.IsInGrid(x + center_x, y + center_y) && gridPlacement.grid.IsEmpty(x + center_x, y + center_y);
+
             indicator.Reposition(indicatorPosition,
-                isEmpty ? color : CellIndicator.invalidColour);
+                isValid ? color : CellIndicator.invalidColour);
         }
     }
 
