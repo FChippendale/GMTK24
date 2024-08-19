@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MenuController : MonoBehaviour
 {
     public Button playButton;
-    public Button helpButton;
+    public Button leaderboardButton;
     public Button quitButton;
 
     void Start()
@@ -14,12 +14,12 @@ public class MenuController : MonoBehaviour
         // and the help screen.
         if (playButton != null)
         {
-            playButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
+            playButton.onClick.AddListener(() => SceneManager.LoadScene("Help"));
         }
 
-        if (helpButton != null)
+        if (leaderboardButton != null)
         {
-            helpButton.onClick.AddListener(() => SceneManager.LoadScene("Help"));
+            leaderboardButton.onClick.AddListener(() => SceneManager.LoadScene("Leaderboard"));
         }
 
         if (quitButton != null)

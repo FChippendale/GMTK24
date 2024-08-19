@@ -37,16 +37,20 @@ public class GameOverController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        score = PlayerPrefs.GetInt(lastScoreKey, 0);
-
-        scoreField.text = $"{score:n0}";
+        if (scoreField != null)
+        {
+            score = PlayerPrefs.GetInt(lastScoreKey, 0);
+            scoreField.text = $"{score:n0}";
+        }
 
         if (PlayerPrefs.HasKey(leaderboardKey))
         {
             string serialized = PlayerPrefs.GetString(leaderboardKey);
             Debug.Log($"Loading leaderboard: {serialized}");
             leaderboard = JsonUtility.FromJson<Leaderboard>(serialized);
-        } else {
+        }
+        else
+        {
             leaderboard.entries = new List<LeaderboardEntry>();
         }
 
@@ -70,14 +74,20 @@ public class GameOverController : MonoBehaviour
 
         playButton.onClick.AddListener(() =>
         {
-            AddToLeaderboard();
+            if (scoreField != null)
+            {
+                AddToLeaderboard();
+            }
             SceneManager.LoadScene("SampleScene");
         });
 
         quitButton.onClick.AddListener(() =>
         {
-            AddToLeaderboard();
-            Application.Quit();
+            if (scoreField != null)
+            {
+                AddToLeaderboard();
+            }
+            SceneManager.LoadScene("Menu");
         });
     }
 
