@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour
 
     public TextMeshProUGUI ui;
 
-    private float timeSinceStart;
+    private float timeSinceStart = 0;
 
     // Start is called before the first frame update
     void Start()
