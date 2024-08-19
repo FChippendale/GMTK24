@@ -60,12 +60,17 @@ public class CollectScore : MonoBehaviour
         pulseRate = 1;
     }
 
+    private void TransitionToGameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
+
     public void Dead()
     {
         PlayerPrefs.SetInt(GameOverController.lastScoreKey, score);
         PlayerPrefs.Save();
         Debug.Log($"Saved score {score}");
 
-        SceneManager.LoadScene("GameOver");
+        Invoke(nameof(TransitionToGameOver), 0.5f);
     }
 }
