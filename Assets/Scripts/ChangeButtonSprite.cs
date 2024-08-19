@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,17 +8,24 @@ public class ChangeButtonSprite : MonoBehaviour
     public Image buttonImage;
 
     bool muted = false;
-    
+
+    public void Start()
+    {
+        GameObject music = GameObject.FindGameObjectWithTag("music");
+        if (music != null)
+        {
+            SetTo(music.GetComponent<AudioSource>().mute);
+        }
+    }
+
     public void ToggleMuteSprite()
     {
-        muted = !muted;
-        if (muted)
-        {
-            buttonImage.sprite = soundOff;
-        }
-        else
-        {
-            buttonImage.sprite = soundOn;
-        }
+        SetTo(!muted);
+    }
+
+    private void SetTo(bool state)
+    {
+        muted = state;
+        buttonImage.sprite = muted ? soundOff : soundOn;
     }
 }

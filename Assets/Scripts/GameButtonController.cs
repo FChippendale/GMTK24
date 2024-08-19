@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,7 +19,7 @@ public class GameButtonController : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
-    
+
     public void ToggleMute()
     {
         audioSource.mute = !audioSource.mute;
