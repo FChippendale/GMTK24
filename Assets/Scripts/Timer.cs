@@ -54,7 +54,6 @@ public class Timer : MonoBehaviour
         ui.transform.localScale = Vector3.one * currentSize;
 
         timeSinceStart += Time.deltaTime;
-        intervalBetweenEvents = 4 + 4 * Mathf.Exp(-0.005f * timeSinceStart);
     }
 
     public void Reset()
@@ -62,5 +61,6 @@ public class Timer : MonoBehaviour
         lastEvent = Time.time;
         currentSize = 1.0f;
         ui.color = Color.black;
+        intervalBetweenEvents = 4 + 4 * Mathf.Exp(-0.005f * timeSinceStart);
     }
 }
