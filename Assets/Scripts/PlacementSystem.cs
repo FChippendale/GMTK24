@@ -79,8 +79,6 @@ public class PlacementSystem : MonoBehaviour
             drawer.traversalType = factoryBehaviourToPlace.traversalType;
             drawer.color = factoryBehaviourToPlace.GetColor();
             drawer.position = new Vector3Int(x, y, 0);
-
-            factoryBehaviourToPlace.viewportPosition = sceneCamera.WorldToViewportPoint(grid.CellToWorld(drawer.position));
         }
 
         if (is_automatic_placement)
