@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,7 +31,7 @@ public class CollectScore : MonoBehaviour
 
     private void UpdateScore()
     {
-        text.SetText("{}", score);
+        text.text = $"{score:n0}";
     }
 
     public void BreakingTiles((int, int) info)
