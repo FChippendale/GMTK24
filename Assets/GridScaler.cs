@@ -9,7 +9,7 @@ public class GridScaler : MonoBehaviour
     public float scaleMultiplier = 0.68f;
     public float thresholdMultiplier = 2.0f;
     public float animationRate = 0.3f;
-    public int thresholdCount = 7;
+    public int thresholdCount = 6;
 
     private int tileCount = 0;
     private readonly List<float> thresholds = new();
