@@ -32,13 +32,20 @@ public class MenuController : MonoBehaviour
 
         if (easyButton != null)
         {
-            PlayerPrefs.SetInt("number_of_colors", 3);
-            easyButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
+
+            easyButton.onClick.AddListener(() =>
+            {
+                PlayerPrefs.SetInt("NumberOfColors", 3);
+                SceneManager.LoadScene("SampleScene");
+            });
         }
         if (hardButton != null)
         {
-            PlayerPrefs.SetInt("number_of_colors", 4);
-            hardButton.onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
+            hardButton.onClick.AddListener(() =>
+            {
+                PlayerPrefs.SetInt("NumberOfColors", 4);
+                SceneManager.LoadScene("SampleScene");
+            });
         }
     }
 }
