@@ -93,9 +93,12 @@ public class GameOverController : MonoBehaviour
 
     void AddToLeaderboard()
     {
+        string name = string.IsNullOrWhiteSpace(inputField.text) ?
+                        "???" : inputField.text.Trim();
+
         LeaderboardEntry entry = new()
         {
-            name = inputField.text,
+            name = name,
             score = score
         };
 
