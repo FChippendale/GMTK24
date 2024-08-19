@@ -20,6 +20,8 @@ public class Timer : MonoBehaviour
 
     public TextMeshProUGUI ui;
 
+    private float timeSinceStart;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +52,9 @@ public class Timer : MonoBehaviour
         currentSize = Mathf.MoveTowards(currentSize,
             targetSize, pulseRate * Time.deltaTime);
         ui.transform.localScale = Vector3.one * currentSize;
+
+        timeSinceStart += Time.deltaTime;
+        intervalBetweenEvents = 4 + 4 * Mathf.Exp(-0.005f * timeSinceStart);
     }
 
     public void Reset()
