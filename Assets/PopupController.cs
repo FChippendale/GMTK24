@@ -22,6 +22,8 @@ public class PopupController : MonoBehaviour
         if (removalTime - Time.time < 0.5 * duration)
         {
             text.color = text.color.WithAlpha((removalTime - Time.time) / (0.5f * duration));
+        } else {
+            text.color = text.color.WithAlpha(1.0f);
         }
     }
 

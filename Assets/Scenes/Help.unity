@@ -1045,12 +1045,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The goal of the game is to place down as many tiles down as possible before
-    you run out of space. Encircling an area with tiles of the same colour will destroy
-    all of them, for a nice score bump and more area to play with.
+  m_text: 'Score by encircling tiles with tiles of a single different colour.
 
-    Rotate clockwise
-    with Q and anti-clockwise with R.'
+    Rotate
+    clockwise with Q and anti-clockwise with R.
+
+    Don''t run out of space.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d5de2e3a6c8e93be2a89065bb3298a30, type: 2}
   m_sharedMaterial: {fileID: -2259404216115026445, guid: d5de2e3a6c8e93be2a89065bb3298a30, type: 2}
