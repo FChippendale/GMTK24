@@ -39,7 +39,7 @@ public class GameOverController : MonoBehaviour
     {
         score = PlayerPrefs.GetInt(lastScoreKey, 0);
 
-        scoreField.text = score.ToString();
+        scoreField.text = $"{score:n0}";
 
         if (PlayerPrefs.HasKey(leaderboardKey))
         {
@@ -64,7 +64,7 @@ public class GameOverController : MonoBehaviour
             Math.Min(leaderboardScores.Count, leaderboard.entries.Count));
         for (int i = 0; i < entries; ++i)
         {
-            leaderboardScores[i].text = leaderboard.entries[i].score.ToString();
+            leaderboardScores[i].text = $"{leaderboard.entries[i].score:n0}";
             leaderboardNames[i].text = leaderboard.entries[i].name;
         }
 
